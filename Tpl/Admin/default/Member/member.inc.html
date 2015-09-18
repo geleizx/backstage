@@ -1,0 +1,31 @@
+<if condition="($page_object neq null)">
+<div class="pagination">
+        <ul>
+			<!-- 第一页 ， 如果只有一页 则不显示  -->
+			<if condition="($page_object.totalPages neq 1)">
+	            <li class="first"><a href="{$page_object.theFrist}"></a></li>
+			</if>
+            
+            <!-- 上一页 第一页则不显示 -->
+			<if condition="($page_object.nowPage neq 1)">            
+            	<li class="prev"><a href="{$page_object.upPage}"></a></li>
+            </if>
+           	
+           	<foreach name="page_object.linkPage" item="pageId">
+           		<if condition="($page_object.nowPage eq $pageId[0])">   		
+					<li class="active"><a href="{$pageId[1]}">{$pageId[0]}</a></li>
+				<else />
+					<li><a href={$pageId[1]}>{$pageId[0]}</a></li>
+				</if>
+           	</foreach>
+     		
+     		<if condition="($page_object.nowPage neq $page_object.totalPages )">   	
+          		  <li class="next"><a href="{$page_object.downPage}"></a></li>
+            </if>
+            
+           	<if condition="($page_object.totalPages neq 1)">	
+          		  <li class="last"><a href="{$page_object.theEnd}"></a></li>
+            </if>
+        </ul>
+    </div>
+</if>

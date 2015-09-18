@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Tpl/Admin/default/header.inc.html" />
+</head>
+<body class="metrouicss">
+	<include file="Tpl/Admin/default/top.inc.html" />
+	<div id="main">
+		<include file="Tpl/Admin/default/nav.inc.html" />
+<div id="main-container">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+<tr>
+<td class="breadCrumb">
+<p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+</td>
+<td>
+<button id="newArticleClassDialog"><i class="icon-plus-2"></i> 快建</button>
+<button><i class="icon-cancel"></i> 删除</button>
+<button id="sort"><i class="icon-list"></i> 开启拖拽排序</button>
+</td>
+<td><div class="input-control text">
+        <input type="text" name="keyword" />
+        <button class="btn-search" style="margin-left:-29px;"></button>
+    </div>
+</td>
+</tr>
+</table>
+<div id="right">
+<!--<table width="100%" border="0" cellspacing="0" cellpadding="0" id="datalist">-->
+
+    <!--<tr><td>-->
+        <ul id="categoryTree" class="ztree"></ul>
+    <!--</td></tr>-->
+  <!--<tr>-->
+    <!--<th class="checkbox"><input type="checkbox" name="checkbox" id="checkbox"></th>-->
+    <!--<th>分类名称</th>-->
+    <!--<th class="date">发布日期</th>-->
+    <!--<th class="public">状态</th>-->
+    <!--</tr>-->
+  <!--<tr>-->
+    <!--<td class="checkbox"><input type="checkbox" name="checkbox" id="checkbox"></td>-->
+    <!--<td>公司新闻&nbsp;&nbsp;<a href="#" class="del">&times;</a></td>-->
+    <!--<td class="date">2013-03-12</td>-->
+    <!--<td class="public">发布</td>-->
+    <!--</tr>-->
+  <!--<tr>-->
+    <!--<td class="checkbox"><input type="checkbox" name="checkbox" id="checkbox"></td>-->
+    <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--公司新闻&nbsp;&nbsp;<a href="#" class="del">&times;</a></td>-->
+    <!--<td class="date">2013-03-12</td>-->
+    <!--<td class="public">发布</td>-->
+    <!--</tr>-->
+  <!--<tr>-->
+    <!--<td class="checkbox"><input type="checkbox" name="checkbox" id="checkbox"></td>-->
+    <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|--公司新闻&nbsp;&nbsp;<a href="#" class="del">&times;</a></td>-->
+    <!--<td class="date">2013-03-12</td>-->
+    <!--<td class="public">发布</td>-->
+    <!--</tr>-->
+
+<!--</table>-->
+</div><!--end.right-->
+</div>
+</div><!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html" />
+<script type="text/javascript">
+
+    var categoryTree = {
+        setting: {
+            data: {
+                key: {
+                    title: "categoryTree"
+                },
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onClick: function (event, treeId, treeNode, clickFlag) {
+                    if (!treeNode.isParent) {
+                        location.href = "__APP__/Admin/News/index/categoryId/" + treeNode.id;
+                    }
+                }
+            }
+        },
+        init: function (moduleId) {
+            $.get('__APP__/Admin/Category/ajaxGetManagementCategory', {'moduleId': moduleId}, function (data) {
+               $.fn.zTree.init($("#categoryTree"), categoryTree.setting, data.info);
+            });
+        }
+    };
+
+    categoryTree.init(2);
+
+    //调用快速新建窗口
+$(document).ready(function(){
+	$('#newArticleClassDialog').click(function(e) {
+		$.Dialog({
+			'title'      : '快速新建',
+			'draggable'  : true,
+		   'content'    : '<form action="" id="newform" class="dialogform" method="post"><span class="item">分类名称：</span><label class="input-control text"><input name="title" id="title" type="text" class="vok"></label><span class="item">所属分类：</span><label class="input-control select"><select>            <option>分类名称</option><option>分类名称</option><option>分类名称</option>        </select></label></form>',
+
+			'buttons'    : {
+				'确定'    : {
+					'action': function(){
+
+                    }
+				},
+				'取消'     : {
+					'action': function(){
+
+                    }
+				}
+			}
+		});
+
+	});
+});
+</script>
+</body>
+</html>

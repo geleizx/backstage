@@ -1,0 +1,32 @@
+<div id="addShortcut">
+    <ul class="helix">
+
+        <volist name="addModList" id="addModList">
+
+            <if condition="($i lt 6)">
+                <li>
+                    <else/>
+                <li class="future">
+            </if>
+            <div class="addShortcutIcon">
+                <div><img src="__APP__/Public/images/{$addModList.img}"></div>
+            </div>
+            <div class="addShortcutDesc"><h3>{$addModList.name}</h3>
+                {$addModList.name}
+            </div>
+            <if condition="$addModList['isbuy'] == 0">
+                <div class="addShortcutBtn">
+                    <!--<button class="btn_buy" id="buy_{$addModList['id']}"><i class="icon-basket"></i>购买</button></div>-->
+                    未购买
+                <else/>
+                <div class="addShortcutBtn">
+                    <button class="btn_add" id="add_{$addModList['id']}"><i class="icon-plus-2"></i>填加</button>
+                </div>
+            </if>
+            </li>
+        </volist>
+    </ul>
+</div>
+
+
+<link href="{$css_dir}/stroll.css" rel="stylesheet" type="text/css" media="all" charset="utf-8"/>

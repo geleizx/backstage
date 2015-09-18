@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+<include file="Tpl/Admin/default/nav.inc.html"/>
+<div id="main-container">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+    <tr>
+        <td>
+            <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+        </td>
+        <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+        </td>
+    </tr>
+</table>
+    <div id="classlist">
+        <h3>
+            频道分类
+        </h3>
+        <div>
+            <div class="left">
+                <div id="category_new"> <i class="icon-plus-2" id="category_new_btn"></i>   </div>
+                <ul id="categoryTree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+
+<div id="right">
+
+<form id="productImagesAdd">
+    <input type="hidden" name="x" id="x" value="">
+    <input type="hidden" name="y" id="y" value="">
+
+    <input type="hidden" name="x2" id="x2" value="">
+    <input type="hidden" name="y2" id="y2" value="">
+
+    <input type="hidden" name="w" id="w" value="">
+    <input type="hidden" name="h" id="h" value="">
+
+    <input type="hidden" name="picture" id="picture" value="{$product.thumb}"/>
+    <input type="hidden" name="ratio" id="ratio_hide" value="" />
+</form>
+<input type="hidden" id="iamgeId"  value="" />
+<form enctype="multipart/form-data" method="post" action="__APP__/Admin/Product/add" id="dataform">
+<input type="hidden" name="id" value="{$product.id}" />
+<ul class="accordion" data-role="accordion">
+<li class="active"><a href="#" class="title">
+    必填项
+</a>
+    <div>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+            <tr>
+                <th>应用类别：</th>
+                <td class="form">
+                    <div class="input-control text">
+                        <input name="type" id="longlong" value="0"  type="radio"><label for="longlong">龙龙应用</label>
+                        <input name="type" id="vst" value="1"  type="radio"><label for="vst">VST应用</label>
+                        <input name="type" id="dsm" value="2"  type="radio"><label for="dsm">电视猫应用</label>
+                        <input name="type" id="dsm" value="3"  type="radio"><label for="dsm">中华云直播</label>
+                    </div>
+                </td>
+                <td class="v" id="v_product_name"></td>
+            </tr>
+
+            <tr>
+                <th>应用名称：</th>
+                <td class="form">
+                    <div class="input-control text"><input name="product_name" id="product_name" value="{$product.product_name}"  type="text">
+                    </div>
+                </td>
+                <td class="v" id="v_product_name"></td>
+            </tr>
+            <!--<tr>-->
+                <!--<th>排序：</th>-->
+                <!--<td class="form">-->
+                    <!--<div class="input-control text"><input name="sort" id="sort" value="{$product.sort}"  type="text">-->
+                    <!--</div>-->
+                <!--</td>-->
+                <!--<td class="v" id="v_product_name"></td>-->
+            <!--</tr>-->
+
+            <tr id="type_id">
+                <th>type_id：</th>
+                <td class="form">
+                    <div class="input-control text"><input name="param1" id="param1" value="{$product.param1}"  type="text">
+                    </div>
+                </td>
+                <td class="v" id="v_product_name"></td>
+            </tr>
+            <tr>
+                <th>tv_id：</th>
+                <td class="form">
+                    <div class="input-control text"><input name="param2" id="param2" value="{$product.param2}"  type="text">
+                    </div>
+                </td>
+                <td class="v" id="v_product_name"></td>
+            </tr>
+            <tr>
+                <th>所属频道：</th>
+                <td class="form">
+                    <div class="input-control text">
+                        <if condition='( $category.catname neq null)' >
+                            <input id="category_name" name="category_name" readonly=readonly type="text"  value="{$category.catname}"/>
+                            <else />
+                            <input id="category_name" name="category_name" readonly=readonly type="text"  value="点击此处选择频道"/>
+                        </if>
+                    </div>
+
+                    <input id="category_id" name="category_id" value="{$product.category_id}" type="hidden"/>
+                </td>
+                <td class="v" id="v_category_name"></td>
+            </tr>
+            <tr>
+                <th>介绍</th>
+                <td class="form">
+                    <script id="editor" type="text/plain" name="content" value="{$product.content}">
+                    {$product.content|htmlspecialchars_decode|stripslashes}
+                </script>
+                </td>
+                <td class="v" id="v_category_content"></td>
+
+            </tr>
+            <tr>
+                <th>上传图片</th>
+                <td class="form"><input type="file" name="fileField" id="fileField" accept="image/*"></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td id="product_image">
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th>缩略图</th>
+                <td class="form">
+                    <if condition="$product.thumb neq null">
+                        <img src="__APP__/{$product.thumb}" id="preview-img" />
+                        <else />
+                        <img src="{$images_dir}/noimg.jpg" id="preview-img" />
+                    </if>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th>缩略图尺寸</th>
+                <td class="form"><span class="input-control select">
+            <select name="ratio" id="ratio">
+                <foreach name="thumbsize" item="thumbsize">
+                    <option value="{$thumbsize.width}_{$thumbsize.height}">{$thumbsize.width} x {$thumbsize.height}</option>
+                </foreach>
+                <option value="296_200">296*200  产品图片</option>
+            </select>
+            <a href="javascript:void(0);" onclick="productImagesAdd();" style="display: none;" id="imageSubmit">剪裁</a>
+      </span></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+</li>
+<li><a href="#" class="title">
+    可选项
+</a>
+    <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+        <if condition="$pageSwitch['keywords'] == 1">
+            <tr>
+                <th>备注</th>
+                <td class="form">
+                    <div class="input-control text"><input name="keywords" id="keywords" type="text" value="{$product.keywords}"></div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['description'] == 1">
+            <tr>
+                <th>简述</th>
+                <td class="form">
+                    <div class="input-control text"><textarea id="memo" name="memo" value="{$product.memo}"></textarea></div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['param'] == 1">
+            <tr>
+                <th>参数</th>
+                <td class="form">
+                    <textarea id="editorcs"  name="arguements"></textarea>
+                </td>
+                <td class="v"></td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['attachment'] == 1">
+            <tr>
+                <th>上传附件</th>
+                <td class="form"><input type="file" name="attachment" id="attachment"></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td id="attachment_url">
+                    最大尺寸 2M 支持类型 .doc .docx .xls .xlsx .ppt .pptx .txt .zip .rar .7z .pdf
+                </td>
+                <td><input id="attachment_hidden" name="attachment_name" type="hidden" value="test"/>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['brand'] == 1">
+            <tr>
+                <th>品牌</th>
+                <td class="form">
+                    <div class="input-control select"><select name="brand">
+                        <option>---请选择品牌---</option>
+                        <foreach name="product['brandList']" item="sub">
+                            <option value ="{$key}">{$sub}</option>
+                        </foreach>
+                    </select></div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['marketprice'] == 1">
+            <tr>
+                <th>市场价格</th>
+                <td class="form">
+                    <div class="input-control text span2"><input name="market_price" id="market_price" type="text" value="{$product.market_price}"></div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['memberprice'] == 1">
+            <tr>
+                <th>会员价格</th>
+                <td class="form">
+
+                    <div class="input-control text span2"><input name="member_price" id="member_price" type="text" value="{$product.member_price}"></div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['target'] == 1">
+            <tr>
+                <th>标记</th>
+                <td class="form">
+                    <label onclick="" class="input-control radio"><input type="radio" value="1"
+                                                                         name="mark" checked=""><span
+                            class="helper"><img src="{$images_dir}/product/ico_free.png"></span></label>
+                    <label onclick="" class="input-control radio"><input type="radio" name="mark"
+                                                                         value="2"><span
+                            class="helper"><img src="{$images_dir}/product/ico_gift.png"></span></label>
+                    <label onclick="" class="input-control radio"><input type="radio" name="mark"
+                                                                         value="3"><span
+                            class="helper"><img src="{$images_dir}/product/ico_hot.png"></span></label>
+                    <label onclick="" class="input-control radio"><input type="radio" name="mark"
+                                                                         value="4"><span
+                            class="helper"><img src="{$images_dir}/product/ico_new.png"></span></label>
+                    <label onclick="" class="input-control radio"><input type="radio" name="mark"
+                                                                         value="5"><span
+                            class="helper"><img src="{$images_dir}/product/ico_recommend.png"></span></label>
+                    <label onclick="" class="input-control radio"><input type="radio" name="mark"
+                                                                         value="6"><span
+                            class="helper"><img src="{$images_dir}/product/ico_quality.png"></span></label></td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['status'] == 1">
+            <tr>
+                <th>上架</th>
+                <td class="form"><label class="input-control switch" onClick="">
+                    <input id="status" name="status" type="checkbox" checked=""/>
+                    <span class="helper">&nbsp;</span>
+                </label></td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <if condition="$pageSwitch['ishot'] == 1">
+            <tr>
+                <th>是否推荐到主页</th>
+                <td class="form"><label class="input-control switch" onClick="">
+                    <if condition="$product['ishot'] == 1">
+                        <input id="ishot" name="ishot" type="checkbox" checked="checked"/>
+                        <span class="helper">&nbsp;</span>
+                        <else />
+                        <input id="ishot" name="ishot" type="checkbox"/>
+                        <span class="helper">&nbsp;</span>
+                    </if>
+
+                </label></td>
+                <td>&nbsp;</td>
+            </tr>
+
+        </if>
+        <if condition="$pageSwitch['stock'] == 1">
+            <tr>
+                <th>库存</th>
+                <td class="form">
+                    <div class="input-control text span2"><input name="amount" id="amount" type="text"></div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+        <!--  这个功能在短期内无法真正的实现，所以暂时关掉，等待时机合适的情况下再来做。  by Ray
+        <tr>
+            <th>社交平台：</th>
+            <td class="form">
+                <a href="javascript:void(0);"> <img src="" class="sina_icon"> </a><a href="javascript:void(0);"> <img src="" class="tencent_icon"> </a>
+            </td>
+            <td class="v" id="v_product_name"></td>
+        </tr>
+        -->
+        <if condition="$pageSwitch['releasedate'] == 1">
+            <tr>
+                <th>发布日期</th>
+                <td class="form">
+                    <div class="input-control text span2">
+                        <input name="create_date" id="datepicker" type="text" class="dateInput" value="" readonly>
+                    </div>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+        </if>
+    </table>
+    </div>
+</li>
+
+</ul>
+
+<div class="buttons">
+    <input type="submit" value="确认">
+    <input type="reset" value="重置">
+</div>
+</form>
+</div>
+<!--end.right-->
+</div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+<script type="text/javascript">
+
+    var imageDefaultDir = "{$images_dir}/noimg.jpg";
+
+    $(function () {
+        categorySelectTree.init(2);
+        categoryTree.init(2);
+        //调用产品介绍编辑器
+        var contentEditor = beditor.new('editor','admin');
+        //调用产品参数编辑器
+        var argumentsEditor = null;
+        if ( $('#argumentsEditor').length  != 0){
+            var argumentsEditor =  beditor.new('editorcs','admin');
+        }
+        //日历控件调用
+        datepicker.new('datepicker');
+
+        category.init(2);
+        // 修改为1.7以上的新绑定
+        $(document).on('click','.preview-img',function(){
+            $('#preview-img').attr('style','' );
+            $('#preview-img').attr('src', $(this).attr('src'));
+            $('#picture').val($(this).attr('src'));
+
+            $("#iamgeId").val($(this).attr('id'));
+            $('#imageSubmit').show();
+            jcorp.renewApi();
+        });
+
+        $(document).on('click','.delImage',function(){
+            $($(this).parent("span:first")).parent("span:first").remove();
+            $('#preview-img').attr('src',imageDefaultDir );
+            $('#preview-img').attr('style','width: 126px;height: 126px;' );
+            $('#imageSubmit').hide();
+            $("#iamgeId").val('');
+            var hideId = "hide_" +$(this).attr('id').split("_")[1];
+            $("#"+hideId).remove();
+            jcorp.deleteApi();
+
+        });
+
+
+
+        $('#fileField').live('change', function () {
+            ajaxFileUpload();
+        })
+        $('#attachment').live('change', function () {
+            ajaxFileUploadAttachment();
+        })
+
+        //ICE 2013-11-07 改变分辨率时重新裁剪
+        $('#ratio').change(function () {
+            if ($('#preview-img').prop('src') != '')
+                jcorp.renewApi();
+        })
+
+
+        var validator = $("#dataform").validate({
+            rules: {
+                product_name: "required",
+                product_id: "required",
+                category_name : "required",
+                type:"required"
+            },
+            errorPlacement: function(error, element) {
+                element.focus();
+            },
+            submitHandler: function (form) {
+                contentEditor.sync();
+
+                if ( $('#category_id').val() == null || $('#category_id').val() == ''){
+                    $('#category_name').removeClass('valid').addClass('error');
+                    return false;
+                }
+
+                if ( argumentsEditor != null){
+                    argumentsEditor.sync();
+                }
+                $(form).ajaxSubmit(function (data) {
+                    var status = data.status;
+                    var info = data.info;
+
+                    if (status){
+                        alert("插入成功");
+                        location.href="__APP__/Admin/Product/";
+                    }else{
+                        alert(data.info);
+                    }
+
+                });
+            }
+        });
+
+
+        $('#reset_btn').click(function () {
+            contentEditor.setContent('');
+            if ( argumentsEditor != null){
+                argumentsEditor.setContent('')
+            };
+            validator.resetForm();
+            $('.valid').removeClass('valid');
+            $('.error').removeClass('error');
+            datepicker.new('datepicker');
+        })
+    });
+
+    function ajaxFileUpload() {
+        $.ajaxFileUpload({
+            url: '__APP__/Admin/Upload/ajaxUpload',
+            secureuri: false,
+            fileElementId: 'fileField',
+            dataType: 'json',
+            complete: function (data, status) {
+
+            },
+            success: function (data, status) {
+
+                var Imgid = rand(100);
+
+                var imageSpan = "<span style='left:10px;'>" +
+                        "<span style='position: relative;top: -50px;'>"+
+                        "<a href='javascript:void(0);' id='delimg_"+Imgid+"' class='delImage'>X</a>"+
+                        "</span>"+
+                        "<img id="+Imgid+" class=\"preview-img\" src=\"" + '__APP__' + data.info[0].savepath + 'thumb_' + data.info[0].savename + "\" style=\" width:150px; \">"+
+                        "</span>";
+
+                $('#product_image').append(imageSpan);
+//                $('#product_image').append("<img class=\"preview-img\" src=\"" + '__APP__' + data.info[0].savepath + 'thumb_' + data.info[0].savename + "\" style=\" width:150px; \">");
+            },
+            error: function (data, status, e) {
+                alert("上传失败");
+            }
+        })
+        return false;
+    }
+
+    function ajaxFileUploadAttachment() {
+        $.ajaxFileUpload({
+            url: '__APP__/Admin/Upload/ajaxUploadAttachment',
+            secureuri: false,
+            fileElementId: 'attachment',
+            dataType: 'json',
+            complete: function (data, status) {
+                alert('已上传');
+            },
+            success: function (data, status) {
+                $('#attachment_url').html("<p>"+data.info[0].savename+"</p>");
+                $('#attachment_hidden').val(data.info[0].savename);
+            },
+            error: function (data, status, e) {
+                alert("上传失败");
+            }
+        })
+        return false;
+    }
+
+
+    function productImagesAdd(){
+        var urlStr = '__APP__/Admin/Product/ajaxProductImageAdd';
+        $("#ratio_hide").val($("#ratio").val());
+        var paraStr =  $("#productImagesAdd").serialize();
+        $.ajax({
+            type: "POST",
+            url: urlStr,
+            data: paraStr,
+            dataType : "JSON",
+            success: function(jsonResult){
+                console.log(jsonResult);
+                var status = jsonResult.status;
+                if(status){
+
+                    var id ="hide_"+ $("#iamgeId").val();
+                    var imageParam = jsonResult.info;
+                    var inputHide = "<input type='hidden' id='"+id+"' name='images[]' value='"+imageParam+"'/>"
+                    $("#dataform").append(inputHide);
+                    $('#preview-img').attr('src',imageDefaultDir );
+                    $('#preview-img').attr('style','width: 126px;height: 126px;' );
+                    $('#imageSubmit').hide();
+                    jcorp.deleteApi();
+                    alert("裁剪完成");
+                }else{
+                    alert('裁剪失败');
+                }
+
+            }
+        });
+
+    }
+
+
+    rnd.today=new Date();
+    rnd.seed=rnd.today.getTime();
+    function rnd(){
+        rnd.seed = (rnd.seed*9301+49297) % 233280;
+        return rnd.seed/(233280.0);
+    };
+    function rand(number){
+        return Math.ceil(rnd()*number);
+    };
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("input:radio[name='type']").change(function() {
+            var val= $('input:radio[name="type"]:checked').val();
+            if(val==1){
+                $('#product_name').val("VST直播");
+                $("#type_id").hide();
+            }else if(val==2){
+                $('#product_name').val("电视猫直播");
+                $("#type_id").hide();
+            }
+            else if(val==3){
+                $('#product_name').val("中华云直播");
+                $("#type_id").hide();
+            }
+            else{
+                $('#product_name').val("龙龙直播");
+                $("#type_id").show();
+            }
+        });
+    });
+</script>
+<div id="dialog-div" style="display:none">
+</div>
+</body>
+</html>

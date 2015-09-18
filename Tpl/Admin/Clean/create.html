@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+
+        <!--<div id="classlist">-->
+            <!--<h3>-->
+                <!--分类列表-->
+            <!--</h3>-->
+            <!--<div>-->
+                <!--<div class="left">-->
+                    <!--<div id="category_new"> <i class="icon-plus-2" id="category_new_btn"></i>   </div>-->
+                    <!--<ul id="categoryTree" class="ztree"></ul>-->
+                <!--</div>-->
+
+            <!--</div>-->
+        <!--</div>-->
+
+        <div id="right">
+            <form id="dataform" method="post" action="{:U('Clean/add')}">
+
+                <input type="hidden" value="{$clean.id}" id="id" name="id">
+
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        必填项
+                    </a>
+                        <div>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                                <tr>
+                                    <th>应用名称</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="title" id="title" type="text"
+                                                                               value="{$clean.title}"></div>
+                                    </td>
+                                    <td class="v"></td>
+                                </tr>
+                                <tr>
+                                    <th>包名</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="package" id="package" type="text"
+                                                                               value="{$clean.package}"></div>
+                                    </td>
+                                    <td class="v"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>文件夹</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="folder" id="folder" type="text"
+                                                                               value="{$clean.folder}"></div>
+                                    </td>
+                                    <td class="v"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                </ul>
+                <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                                                             value="重置"/><input
+                        type="button" onclick="history.back()" value="取消"/></div>
+            </form>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+<div id="dialog-div" style="display:none"></div>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<li class='cc-list-item' tabindex='{$index}' style='' >
+    <div role='tree' class='cc-tree' >
+        <ul role='listbox' tabindex='' hidefocus='-1' unselectable='on' class='cc-tree-cont'>
+            <li id='cc-tree-group-id' class='cc-tree-group' aria-expanded='false' role='treeitem'>
+                <ul class='cc-tree-gcont' role='group'>
+                    <li id="selectAll" style="padding: 0 16px 0 14px;" class="select_btn">
+                        <input type="checkbox" name="selectAll" class="selectAll" value="{$index}"> 全选
+                    </li>
+                    <volist name='roleList' id='role'>
+                        <li id="{$type}_{$role.id}" class="cc-tree-item cc-hasChild-item">
+                            <input type="checkbox" name="roleSelect_{$index}" value="{$role.id}"> {$role.name}
+                        </li>
+                    </volist>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</li>
+

@@ -1,0 +1,66 @@
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+       id="datalist" class="">
+    <thead>
+    <tr>
+        <th class="checkbox"><input type="checkbox" id="check_all"></th>
+        <th>标题</th>
+        <if condition="$type eq 1">
+            <th>所属模块</th>
+        </if>
+
+        <th>排序</th>
+        <th>点击量</th>
+        <th class="">发布日期</th>
+        <th class="">状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody class="datalistclass">
+    {$ret}
+    </tbody>
+
+</table>
+
+<script type="text/javascript">
+    $(function() {
+
+        $("td").dblclick(function() { //获取标签
+            var td = $(this);
+            var itemid=td[0].id;
+
+            var txt = td.text();
+            var input = $("<input type='text' value='"+ txt +"'/>");
+            td.html(input);
+            input.click(function() { return false; });
+//获取焦点
+            input.trigger("focus");
+
+            input.blur(function() {
+                var newtxt = $(this).val();
+
+       if (newtxt != txt) {
+                    td.html(newtxt);
+                    var caid = $.trim(td.prev().text());
+
+                    //*这里做ajax去后台操作     *//**//*
+
+                    $.post('__APP__/Admin/Category/changeSort', {'itemid': itemid,'newtxt': newtxt}, function (data){
+                     if(data=="1")
+                     {
+                     location.reload();
+                     td.html(txt);
+                     return;
+                     }
+                     td.html(newtxt);
+                     });
+
+                     }
+                     else
+                     {
+                     td.html(newtxt);
+                     }
+                     });
+        });
+    });
+</script>

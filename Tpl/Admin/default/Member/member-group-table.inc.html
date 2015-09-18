@@ -1,0 +1,61 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+       id="datalist" class="tablesorter">
+    <thead>
+    <tr>
+        <th class="checkbox"><input type="checkbox" id="check_all"></th>
+
+        <th>会员组名</th>
+        <th>升级点数</th>
+        <th>下载</th>
+        <th>发表评论与消息</th>
+        <th>状态</th>
+        <th class="hits">操作 </th>
+
+    </tr>
+
+    </thead>
+    <tbody>
+    <foreach name="groupList" item="group">
+        <tr>
+            <td><input type="checkbox" name="Group_checkbox"
+                       id="Group_{$group.id}"></td>
+
+            <td><a href="__APP__/Admin/Member/groupConfig/id/{$group.id}">
+                <span style="color: {$group.usernamecolor}">{$group.name}</span></a>
+                <a href="javascript:void(0)" alt="删除" id="group_delete_{$group.id}" class="del"> × </a>
+            </td>
+            <td>{$group.point} </td>
+            <td>{$group.allowdownload} </td>
+            <td>{$group.allowsendmessage} </td>
+            <td>{$group.disabled} </td>
+            <td><a href="__APP__/Admin/Member/groupConfig/id/{$group.id}">设置</a></td>
+
+        </tr>
+    </foreach>
+    </tbody>
+</table>
+
+<script>
+
+    /*
+    function delGroup(id){
+
+        var groupId = 0;
+        if(id > 0){
+            groupId = id;
+        }else{
+            alert('对象为空!');
+            return;
+        }
+
+        $.get(window.SITE_URL + "/Admin/Member/ajaxDelGroup", {'group_id':groupId}, function (data) {
+            if(data.status){
+                alert(data.info);
+                $(delObj).remove();
+            }else{
+                alert(data.info);
+            }
+        })
+    }
+    */
+</script>

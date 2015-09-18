@@ -1,0 +1,54 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+       id="datalist" class="tablesorter">
+    <thead>
+    <tr>
+        <th class="checkbox"><input type="checkbox" id="check_all"></th>
+
+        <th>标题</th>
+
+        <th>所属分类</th>
+        <th >类型 </th>
+        <th class=" ">地区 </th>
+        <th class="hits">年份 </th>
+        <th class="hits">点击量 </th>
+        <th   class="headerSortUp date">发布日期</th>
+        <th class="hits">操作 </th>
+
+    </tr>
+
+    </thead>
+    <tbody>
+    <foreach name="pages" item="vo">
+        <tr>
+            <td><input type="checkbox" name="Page_checkbox"
+                       id="Page_{$vo.id}"></td>
+
+            <td><a href="__APP__/Admin/Page/edit/id/{$vo.id}">{$vo.title}</a> <a href="javascript:void(0)" alt="删除" id="page_delete_{$vo.id}"
+                                                                                 class="del"> × </a></td>
+            <td>{$vo.category.catname}</td>
+            <td>
+            <foreach name="type" item="vovo" key="key">
+                <foreach name="vo['catList']" item="sub" key="k" >
+                    <if condition="$vovo eq $sub" >{$sub},</if>
+                </foreach>
+            </foreach>
+            </td>
+            <td>{$vo.area}</td>
+            <td>{$vo.year}</td>
+            <td>{$vo.allnum}</td>
+            <td>{$vo.create_date|substr=0,10}</td>
+            <!--<td><a href="__APP__/Admin/Page/copy/id/{$vo.id}">复制</a></td>-->
+            <td>
+            <!--状态-->
+            <span class="verify" id="verify_{$vo.id}">
+            <if condition="$vo['verify'] == 0">
+            <span class="stop">已下架</span>
+            <else />
+            <span class="run">已开启</span>
+            </if>
+            </span>
+            </td>
+        </tr>
+    </foreach>
+    </tbody>
+</table>

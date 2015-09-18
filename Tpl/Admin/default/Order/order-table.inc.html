@@ -1,0 +1,129 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="datalist">
+
+    <thead>
+    <tr>
+        <th class="checkbox"><input type="checkbox" name="check_all" id="check_all"></th>
+        <th>订单号</th>
+        <th>下单日期</th>
+        <th>首付金额</th>
+        <th>月供金额</th>
+        <th>分期月数</th>
+        <th>产品类型</th>
+
+        <th class="headerSortUp date">订单状态</th>
+      <!--   <th class="hits">收货人</th>
+        <th class="hits">地址</th>
+        <th class="remind">联系电话</th> -->
+        <th>用户信息</th>
+        <th class="public"> 还款状况 </th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+
+    <foreach name="allOrderList" item="feedbackList">
+        <tr>
+            <td class="checkbox"><input type="checkbox" name="reply_checkbox" id="replycheckbox_{$feedbackList.id}"></td>
+            <td>
+                <!--订单号-->
+                <a href="javascript:void(0)" class="reply" id="reply_{$feedbackList.id}">{$feedbackList.orderid}</a>&nbsp;&nbsp;<a href="javascript:void(0)" id="productDelete_{$feedbackList.id}" class="del">&times;</a>
+            </td>
+            <td>
+                <!--下单日期-->
+                {$feedbackList.create_time|date="Y-m-d h:i:s",###}
+            </td>
+            <td>
+                <!--订单金额-->
+                {$feedbackList.firstPay}
+            </td>
+            <td>
+                <!--订单金额-->
+                {$feedbackList.monthPay}
+            </td>
+            <td>
+                <!--订单金额-->
+                {$feedbackList.month}
+            </td>
+            <td>
+                <!--订单金额-->
+                {$feedbackList.description}
+            </td>
+            <!--<td>-->
+                <!--&lt;!&ndash;收货人&ndash;&gt;-->
+                <!--{$feedbackList.company}-->
+            <!--</td>-->
+
+            <td>
+                <!--订单状态-->
+                <select name="paystatus" id="statusId"  onchange="getStatus({$feedbackList.id})">
+                    <option value="10" <if condition="$feedbackList['status'] eq 10">selected = "selected"</if>>业务处理中</option>
+                    <option  value="20" <if condition="$feedbackList['status'] eq 20">selected = "selected"</if>>预审核通过</option>
+                    <option  value="30" <if condition="$feedbackList['status'] eq 30">selected = "selected"</if>>审核通过</option>
+                    <option  value="40" <if condition="$feedbackList['status'] eq 40">selected = "selected"</if>>未通过审核</option>
+                    <option value="50" <if condition="$feedbackList['status'] eq 50">selected = "selected"</if>>发货</option>
+                </select>
+                <!--<if condition="$feedbackList.status eq 10">-->
+                    <!--等待付款-->
+                    <!--<elseif condition="$feedbackList.status eq 20" />-->
+                    <!--付款失败-->
+                    <!--<elseif condition="$feedbackList['month'] eq $feedbackList['month_over']" />-->
+                    <!--已还清-->
+                    <!--<else />-->
+                    <!--还款中-->
+                    <!--</if>-->
+            </td>
+         <!--    <td>
+             付款状态
+             {$feedbackList.real_name}
+         </td>
+         <td>
+             发货状态
+             {$feedbackList.address}
+         </td>
+         <td>
+             {$feedbackList.phone}
+         </td> -->
+            <td>
+                <a href="__APP__/Admin/Member/edit/id/{$feedbackList.uid}">查看</a>
+            </td>
+            <td>
+            <!--回复-->
+            <a href = "javascript:void(0)" onclick = "document.getElementById('light_'+{$feedbackList.id}).style.display='block';document.getElementById('fade_'+{$feedbackList.id}).style.display='block'" class="reply" id="reply_{$feedbackList.id}"><span class="stop">详情</span></a>
+        </td>
+        </tr>
+        <div id="light_{$feedbackList.id}" class="white_content">还款状况： <a href = "javascript:void(0)" onclick = "document.getElementById('light_'+{$feedbackList.id}).style.display='none';document.getElementById('fade_'+{$feedbackList.id}).style.display='none'"><b style="float: right;">关闭</b></a><br>
+
+           <form id="formInfo" method="post" action="{:U('Order/payBack')}" >
+             每月还款日： <input type="text" name="paydate" value="{$feedbackList.paydate}"  placeholder="设置每月还款日">号<br>
+                  共需还款{$feedbackList.month}个月<br>
+                  已还款{$feedbackList.month_over}个月<br>
+                 线下确认当月还款操作:
+
+               <input type="hidden" name="orderid" value="{$feedbackList.id}">
+               <input type="checkbox" name="checkBtn" >(点击确认，并更新信息) <br><br>
+               <input type="submit"  value="更新信息" class="button_007">
+            </form>
+        </div>
+        <div id="fade_{$feedbackList.id}" class="black_overlay"></div>
+    </foreach>
+    </tbody>
+</table>
+
+<script>
+   function getStatus(id){
+      var sid  = $("#statusId").val();
+       $.ajax({
+           url:'__APP__/Admin/Order/changeStatus',
+           data:{'status':sid,'id':id},
+           dataType:'JSON',
+           type:'POST',
+           success:function(data){
+//                            console.log(data);
+             alert(data.info);
+           }
+       });
+
+   }
+
+</script>

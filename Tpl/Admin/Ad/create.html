@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td class="breadCrumb">
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+
+        <div id="right">
+            <form enctype="multipart/form-data" id="dataform" action="{:U('Ad/createAct')}" method="post">
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        基本设置
+                    </a>
+                        <div>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+
+                    <tr>
+                        <th>标题</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="title" id="title" type="text"></div>
+                        </td>
+                        <td class="v">
+                            <!--<img src="images/vok.png"></td>-->
+                    </tr>
+                    <tr>
+                        <th>位置说明</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="postionDes" id="postionDes" type="text"></div>
+                        </td>
+                        <td class="v">
+                            <!--<img src="images/vok.png"></td>-->
+                    </tr>
+                    <tr>
+                        <th>类型</th>
+                        <td class="form">
+                            <div class="input-control select">
+                                <select id="adTypeId" name="typeid">
+                                    <option>---请选择分类---</option>
+                                    <foreach name="typelist" item="typelist">
+                                        <option value="{$typelist.id}">{$typelist.name}</option>
+                                    </foreach>
+                                </select>
+
+                                
+                            </div>
+                        </td>
+                        <td class="v">
+                            <!--<img src="images/verror.png" class="vok">您还没有选择类型</td>-->
+                    </tr>
+
+                    <tr>
+                        <th>广告尺寸</th>
+                        <td class="form">
+                            <div class="text">宽：<input name="width" id="width" type="text" style="width:50px;">px&nbsp;&nbsp;&nbsp;&nbsp;高：<input
+                                    name="height" id="height" type="text" style="width:50px;">px
+                            </div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr id="de_infinite">
+                        <th>投放期限</th>
+                        <td class="form">
+                            <div class="input-control text" style="float:left;width:100px;"><input name="endtimeValue" id="title" type="text"></div>
+                            <div class="input-control select" style="float:left;width:50px;">
+                                <select id="adTypeId" name="endtimeType">
+                                    <option value="year">年</option>
+                                    <option value="month">月</option>
+                                    <option value="week">周</option>
+                                    <option value="day">天</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="v">
+                            <!--<img src="images/verror.png" class="vok">您还没有选择类型</td>-->
+                    </tr>
+                    <tr>
+                        <th>无限期</th>
+                        <td class="form">
+                            <label class="input-control switch" onClick="">
+                                <input name="infinite" type="checkbox" id="infinite" />
+                                <span class="helper">&nbsp;</span>
+                            </label>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                    </table>
+                        </div>
+</li>
+                    <li id="ad_setting"><a href="#" class="title">
+                        广告设置
+                    </a>
+                        <div><table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th colspan="3" id="adType">
+
+                        </th>
+
+                    </tr>
+                            </table></div></li>
+
+                            <li><a href="#" class="title">
+                                可选项
+                            </a>
+                                <div><table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+                    <tr>
+                        <th>投放商</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="poster" id="poster" type="text"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>联系人</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="contacts" id="contacts" type="text"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>联系方式</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="contact" id="contact" type="text"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>状态</th>
+                        <td class="form"><label class="input-control switch" onClick="">
+                            <input type="checkbox" name="status" checked="checked"/>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <td>&nbsp;</td>
+                    </tr></table></div></li></ul>
+
+                        <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                type="button" value="取消"/></div>
+            </form>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+
+</body>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //加載日期控件
+        datepicker.new('sdatepicker');
+        datepicker.new('edatepicker');
+
+        $('#infinite').click(function(){
+            if ( !$(this).prop('checked')){
+                $('#de_infinite').show();
+            }else{
+                $('#de_infinite').hide();
+            }
+
+
+        });
+
+        //初始化
+        changeModel(1,9999999);
+
+        $('#adTypeId').change(function () {
+            var id = $(this).val();
+            changeModel(id,9999999);
+        });
+
+        $("#dataform").validate({
+            rules: {
+                title: "required",
+                postionDes: "required",
+                width: {
+                    required: true,
+                    number :true
+                },
+                height : {
+                    required: true,
+                    number :true
+                }
+            },
+            submitHandler: function (form) {
+
+                $(form).ajaxSubmit(function (data) {
+                   if ( data.status ){
+                       alert('插入成功');
+                       location.href = "__APP__/Admin/Ad";
+                   }else{
+                       alert('插入失败');
+                   }
+                });
+            },
+            errorPlacement: function (error, element) {
+            }
+        });
+    });
+
+
+    function changeModel (tid,id){
+        $('#adType').load('__APP__/Admin/Ad/getAdSetup', {'tid': tid , 'id' : id}, function () {
+            $.getScript('{$js_dir}/pagecontrol.js');
+            $('#ad_setting').addClass('active');
+            $('.upload').each(function(){
+
+                var node = $(this);
+                node.change(function () {
+                    id = $(this).prop('id');
+                    ajaxFileUpload(id);
+                });
+
+
+            });
+        });
+    }
+
+    function ajaxFileUpload(id) {
+        $.ajaxFileUpload({
+            url: '__APP__/Admin/Upload/ajaxUpload',
+            secureuri: false,
+            fileElementId: id,
+            dataType: 'json',
+            complete: function (data, status) {
+
+            },
+            success: function (data, status) {
+                var src =window.SITE_URL + data.info[0].savepath + 'thumb_' + data.info[0].savename;
+                $('#preview-img-' + id ).prop( 'src', src );
+                var input_hidden = $('#hidden-'+id);
+                input_hidden.val(src);
+            }
+
+//            error: function (data, status, e) {
+//                alert(e);
+//                alert(status);
+//            }
+        })
+        return false;
+    }
+
+
+
+</script>
+
+</html>

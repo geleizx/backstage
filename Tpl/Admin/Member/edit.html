@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+        <div id="right">
+            <form enctype="multipart/form-data" action="{:U('update')}" method="post" id="dataform">
+                <input type="hidden" name="x" id="x" value="">
+                <input type="hidden" name="y" id="y" value="">
+
+                <input type="hidden" name="x2" id="x2" value="">
+                <input type="hidden" name="y2" id="y2" value="">
+
+                <input type="hidden" name="w" id="w" value="">
+                <input type="hidden" name="h" id="h" value="">
+
+                <input type="hidden" name="avatar" id="picture" value="{$vo.thumb}"/>
+                <input type="hidden" name="userid"  value="{$adminList.userid}"/>
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        必填项
+                    </a>
+                        <div>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                                <tr>
+                                    <th>姓名</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="nickname" id="news_title" type="text"
+                                                                               class="required" value="{$adminList.nickname}"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>电话</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="mobile" id="news_title" type="text"
+                                                                               class="required" value="{$adminList.mobile}"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>职业</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="post" id="news_title" type="text"
+                                                                               class="required" value="{$adminList.post}"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>性别</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input type="radio" name="sex" id="boy" value="1" <if condition="$adminList['sex'] eq 1">checked="checked"</if>><label for="boy" >男</label><input type="radio" name="sex" value="2" id="girl" <if condition="$adminList['sex'] eq 2">checked="checked"</if>><label for="girl">女</label></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>身份证</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="identity" id="news_title" type="text"
+                                                                               class="required" value="{$adminList.identity}"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>常用邮箱</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="email" id="news_title" type="text"
+                                                                               class="required" value="{$adminList.email}"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>紧急联系电话</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="emergency" id="news_title" type="text"
+                                                                               class="required" value="{$adminList.emergency}"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </li>
+                    <li><a href="#" class="title">
+                        可选项
+                    </a>
+                        <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <th>学校名称</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="university" id="news_title" type="text"
+                                                                           class="required" value="{$adminList.university}"></div>
+                                </td>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <th>宿舍地址</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="bedroom" id="news_title" type="text"
+                                                                           class="required" value="{$adminList.bedroom}"></div>
+                                </td>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <th>专业</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="major" id="news_title" type="text"
+                                                                           class="required" value="{$adminList.major}"></div>
+                                </td>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                            <th>入学时间</th>
+                            <td class="form">
+                                <div class="input-control text"><input name="entrance_time" id="news_title" type="text"
+                                                                       class="required" value="{$adminList.major}"></div>
+                            </td>
+                            <td class="v" id="v_news_title"></td>
+                        </tr>
+                            <tr>
+                                <th>公司名称</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="company_name" id="news_title" type="text"
+                                                                           class="required" value="{$adminList.company_name}"></div>
+                                </td>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <th>公司地址</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="company_address" id="news_title" type="text"
+                                                                           class="required" value="{$adminList.company_address}"></div>
+                                </td>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <th>公司类型</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="company_type" id="news_title" type="text"
+                                                                           class="required" value="{$adminList.company_type}"></div>
+                                </td>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <th>公司电话</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="company_call" id="news_title" type="text"
+                                                                           class="required" value="{$adminList.company_call}"></div>
+                                </td>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <th>上传图片</th>
+                                <td class="form"><input type="file" name="fileField" id="fileField"></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <td class="form"><img id="preview-img" style="display: none; "></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th>缩略图尺寸</th>
+                                <td class="form"><span class="input-control select">
+        <select name="ratio" id="ratio">
+            <option value="130_130">130*130</option>
+        </select>
+      </span></td>
+                                <td>&nbsp;</td>
+                            </tr>                            </table>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                                                             value="重置"/></div>
+            </form>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+
+</body>
+
+<script type="text/javascript" >
+
+    $(document).ready(function(){
+        $('#fileField').live('change', function () {
+            ajaxFileUpload();
+        });
+    });
+
+    function ajaxFileUpload() {
+        $.ajaxFileUpload({
+            url: window.SITE_URL + '/Admin/Upload/ajaxUpload',
+            secureuri: false,
+            fileElementId: 'fileField',
+            dataType: 'json',
+            complete: function (data, status) {
+            },
+            success: function (data, status) {
+                $('#preview-img').show();
+                $('#preview-img').attr('src', window.SITE_URL + data.info[0].savepath + 'thumb_' + data.info[0].savename);
+                $('#picture').val( data.info[0].savepath + 'thumb_' + data.info[0].savename);
+                jcorp.renewApi();
+            },
+            error: function (data, status, e) {
+                alert("上传失败");
+            }
+        })
+        return false;
+    }
+</script>
+</html>

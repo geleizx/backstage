@@ -1,0 +1,105 @@
+<div id="header" class="bg-color">
+    <div class="title">
+        <h1></h1>
+        <p>您好 {$Think.session.user.nickname}！
+            <button id="pwDialog">[修改密码]</button>
+        </p>
+    </div>
+ <div class="btn">
+        <a></a>
+        <a></a>
+        <a href="javascript:void(0)" id="cache" title="cache">清理缓存</a>
+        <a href="javascript:void(0)" id="exit" title="exit">退出</a>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#pwDialog').click(function (e) {
+                $.Dialog({
+                    'title': '修改密码',
+                    'draggable': true,
+                    'content': '<form action="{:U(\'User/changePassword\')}" id="pwform" method="post"  enctype="multipart/form-data" ><div class="input-control text"><label for="pw">原始密码</label><input name="pw" id="pw" type="password" ></div><div class="input-control text"><label for="npw">新密码</label><input name="npw" id="npw" type="password"></div><div class="input-control text"><label for="vpw">确认新密码</label><input name="vpw" id="vpw" type="password"></div></form>',
+                    'buttons': {
+                        '确定': {
+                            'action': function () {
+
+                               $('#pwform').submit(function(){
+                                   $('#pwform').ajaxSubmit({
+                                       success:  function(data){
+                                            alert(data.info);
+                                       }
+                                   });
+                                   return false;
+                               });
+
+                                $('#pwform').submit();
+
+                            }
+                        },
+                        '取消': {
+                            'action': function () {
+
+                            }
+                        }
+                    }
+                });
+
+            });
+
+            $("#exit").click(function(){
+            // dialog开始
+            $.Dialog({
+                'title'      : '登出确认',
+                'draggable'  : true,
+                'content'    : '确认要退出吗',
+                'buttons'    : {
+                    '退出'    : {
+                        'action': function(){
+
+							//登出操作开始
+							$.get('__APP__/Admin/User/logout',function(){
+								 location.reload();
+							});
+							//登出操作结束
+
+                        }
+                    },
+                    '取消'     : {
+                        'action': function(){}
+                    }
+                }
+            });
+            // dialog 结束				
+            });
+
+            $("#cache").click(function(){
+                // dialog开始
+                $.Dialog({
+                    'title'      : '清除确认',
+                    'draggable'  : true,
+                    'content'    : '确认要清除缓存吗',
+                    'buttons'    : {
+                        '清理'    : {
+                            'action': function(){
+
+                                //登出操作开始
+                                $.get('__APP__/Admin/Base/clean',function(){
+                                    location.reload();
+                                });
+                                //登出操作结束
+
+                            }
+                        },
+                        '取消'     : {
+                            'action': function(){}
+                        }
+                    }
+                });
+                // dialog 结束
+            });
+        });
+    </script>
+
+
+</div><!--end.header-->

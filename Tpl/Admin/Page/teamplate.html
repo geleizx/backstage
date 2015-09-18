@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Tpl/Admin/default/header.inc.html"/>
+        </head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+        <div id="right">
+            <form enctype="multipart/form-data" id="dataform">
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        页面内容选项
+                    </a>
+                        <div>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th>简述</th>
+                        <td class="form"><label class="input-control switch" onClick="">
+                            <if condition="($template.description eq 1)">
+                                <input type="checkbox" name="description" checked=""/>
+                                <else />
+                                <input type="checkbox" name="description" />
+                            </if>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <th>关键字</th>
+                        <td class="form"><label class="input-control switch" onClick="">
+                            <if condition="($template.keywords eq 1)">
+                                <input type="checkbox" name="keywords" checked=""/>
+                                <else />
+                                <input type="checkbox" name="keywords" />
+                            </if>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <th>发布时间</th>
+                        <td class="form"><label class="input-control switch" onClick="">
+                            <if condition="($template.releasedate eq 1)">
+                                <input type="checkbox" name="releasedate" checked=""/>
+                                <else />
+                                <input type="checkbox" name="releasedate" />
+                            </if>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <th>&nbsp;</th>
+                        <td class="form">&nbsp;</td>
+                                               
+                    </tr>
+                            </table>
+                        </div>
+                    </li>
+                    <li class="active"><a href="#" class="title">
+                        页面分类选项
+                    </a>
+                        <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <th>描述</th>
+                                <td class="form"><label class="input-control switch" onClick="">
+                                    <if condition="($template.category_describe eq 1)">
+                                        <input type="checkbox" name="category_describe" checked=""/>
+                                        <else />
+                                        <input type="checkbox" name="category_describe" />
+                                    </if>
+                                    <span class="helper">&nbsp;</span>
+                                </label></td>
+                                <th>上传图片</th>
+                                <td class="form"><label class="input-control switch" onClick="">
+                                    <if condition="($template.category_thumb eq 1)">
+                                        <input type="checkbox" name="category_thumb" checked=""/>
+                                        <else />
+                                        <input type="checkbox" name="category_thumb" />
+                                    </if>
+                                    <span class="helper">&nbsp;</span>
+                                </label></td>
+                                <th>状态</th>
+                                <td class="form"><label class="input-control switch" onClick="">
+                                    <if condition="($template.category_status eq 1)">
+                                        <input type="checkbox" name="category_status" checked=""/>
+                                        <else />
+                                        <input type="checkbox" name="category_status" />
+                                    </if>
+                                    <span class="helper">&nbsp;</span>
+                                </label></td>
+                                <th>&nbsp;</th>
+                                <td class="form">&nbsp;</td>
+                            </tr></table>
+                        </div>
+                    </li>
+                    <!--所有功能选项类的表单都做成即时生效吧，不需要用户再点提交表单的操作    by Ray-->
+                    <!--<tr>-->
+                        <!--<th colspan="8" class="buttons"><input type="submit" value="确认"/><input type="reset"  value="重置"/><input type="button" value="取消"/></th>-->
+                    <!--</tr>-->
+                </table>
+
+        </li>
+
+        </ul>
+        </form>
+        </div><!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+</body>
+<script type="text/javascript">
+    $('input[type=checkbox]').click(function(){
+        $.get("{:U('Page/saveTemplate')}",{'name' : $(this).prop('name'), 'checked' : $(this).prop('checked')},function(){
+            //     location.reload();
+        })
+    });
+</script>
+<div id="dialog-div" style="display:none">
+</div>
+</html>

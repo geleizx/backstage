@@ -1,0 +1,199 @@
+<div data-role="page-control" class="page-control span10">
+    <span class="menu-pull"></span>
+
+    <div class="menu-pull-bar">页面 1</div>
+
+    <ul id="ad_list_ul">
+        <li id="ad_id_1" class="active"><a href="#page1">广告1</a></li>
+        <li id="ad_id_2"><a href="#page2">广告2</a></li>
+        <li id="ad_id_3"><a href="#page3">广告3</a></li>
+        <li id="ad_id_4"><a href="#page4">广告4</a></li>
+        <li><a id="ad_add" href="javascript:void(0) ">+新建</a></li>
+    </ul>
+
+    <div class="frames">
+        <div id="page1" class="frame active">
+            <table>
+                <tr>
+                    <th>上传图片</th>
+                    <td class="form"><input type="file"  id="imgsrc_1" name="imgsrc_1_temp" class="upload"> <input type="hidden" name="imgsrc_1" id="hidden-imgsrc_1" value="{$slide_imgsrc[0]}" /> </td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <if condition="$slide_imgsrc[0]">
+                    <td class="form"><img src="{$slide_imgsrc[0]}"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    <else />
+                    <td class="form"><img src="{$images_dir}/noimg.jpg"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    </if>
+                </tr>
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="linkurl_1" id="linkurl_1" type="text" value="{$slide_linkurl[0]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="des_1" id="des_1" type="text" value="{$slide_des[0]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td class="form">
+                        <button  class="remove_ad_btn"  type="button" id="remove_btn_1"><i class="icon-cancel"></i> 删除</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="page2" class="frame">
+            <table>
+                <tr>
+                    <th>上传图片</th>
+                    <td class="form"><input type="file" id ="imgsrc_2" name="imgsrc_2_temp" class="upload" >  <input type="hidden" name="imgsrc_2"  id="hidden-imgsrc_2" value="{$slide_imgsrc[1]}"  > </td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <if condition="$slide_imgsrc[1]">
+                    <td class="form"><img src="{$slide_imgsrc[1]}"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    <else />
+                    <td class="form"><img src="{$images_dir}/noimg.jpg"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    </if>
+                </tr>
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="linkurl_2" id="linkurl_2" type="text" value="{$slide_linkurl[1]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="des_2" id="des_2" type="text" value="{$slide_des[1]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td class="form">
+                        <button  class="remove_ad_btn"  type="button" id="remove_btn_2"><i class="icon-cancel"></i> 删除</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="page3" class="frame">
+            <table>
+                <tr>
+                    <th>上传图片</th>
+                    <td class="form"><input type="file" id ="imgsrc_3"  name="imgsrc_3_temp" class="upload" >  <input type="hidden" name="imgsrc_3"  id="hidden-imgsrc_3" value="{$slide_imgsrc[2]}"  ></td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <if condition="$slide_imgsrc[2]">
+                    <td class="form"><img src="{$slide_imgsrc[2]}"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    <else />
+                    <td class="form"><img src="{$images_dir}/noimg.jpg"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    </if>
+                </tr>
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="linkurl_3" id="linkurl_3" type="text" value="{$slide_linkurl[2]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="des_3" id="title" type="text" value="{$slide_linkurl[2]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td class="form">
+                        <button class="remove_ad_btn"  type="button" id="remove_btn_3"><i class="icon-cancel"></i> 删除</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="page4" class="frame">
+            <table>
+                <tr>
+                    <th>上传图片</th>
+                    <td class="form"><input type="file" id ="imgsrc_4" name="imgsrc_4_temp" class="upload" >  <input type="hidden" name="imgsrc_4"  id="hidden-imgsrc_4" value="{$slide_imgsrc[3]}"  ></td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <if condition="$slide_imgsrc[3]">
+                    <td class="form"><img src="{$slide_imgsrc[3]}"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    <else />
+                    <td class="form"><img src="{$images_dir}/noimg.jpg"  id="preview-img-imgsrc_1" class="preview-img"></td>
+                    </if>
+                </tr>
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="linkurl_4" id="linkurl_4" type="text" value="{$slide_linkurl[3]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="des_4" id="des_4" type="text" value="{$slide_linkurl[3]}" ></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td class="form">
+                        <button class="remove_ad_btn"  type="button" id="remove_btn_4"><i class="icon-cancel"></i> 删除</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</td>
+</tr>
+
+        <script type="text/javascript">
+
+            $('.remove_ad_btn').live('click',function(){
+
+                var id = $(this).prop('id').split('_')[2];
+
+                if (id == 1 || id == 2){
+                    alert('必须保证两个轮播');
+                    return ;
+                }
+
+                var new_id =  $('#ad_id_' + id).prev().prop('id').split('_')[2];
+                $('#ad_id_' + id).remove();
+                $('#page' + id).remove();
+
+                $('#ad_id_' + new_id + ' a').trigger('click');
+            });
+
+            $('#ad_add').click(function(event){
+                event.stopPropagation();
+
+                var ad_id = $(this).parent('li').prev().prop('id').split('_')[2];
+                var new_id =  parseInt(ad_id) + 1 ;
+
+                var text = '<li id="ad_id_' + ( parseInt(ad_id)  + 1) + '"><a href="#page' + new_id +'">广告' + new_id + '</a></li>';
+                $(text).insertBefore($(this).parent('li'));
+
+                var new_page = $('#page1').clone().html().replace( /1/g,new_id);
+                var outer = '<div id="page' + new_id + '" class="frame" ></div>';
+                var ret = $(outer).append(new_page);
+
+                ret.find('.remove_btn').prop('id','remove_btn_' +  new_id );
+//
+                $('.frame:last').after($(ret));
+
+                $('[data-role="page-control"]').each(function () {
+                    $(this).PageControl();
+                })
+                $('#ad_id_' + new_id + ' a').trigger('click');
+            });
+        </script>
+
+
+

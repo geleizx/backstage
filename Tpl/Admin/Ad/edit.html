@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <input type="hidden" id="ad_id" value="{$adContent.id}"/>
+    <div id ="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td class="breadCrumb">
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+
+        <div id="right">
+            <form enctype="multipart/form-data" id="dataform" action="{:U('Ad/editAct')}" method="post">
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        基本设置
+                    </a>
+                        <div>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                                    <tr>
+                                        <th>标题</th>
+                                        <td class="form">
+                                            <div class="input-control text"><input name="title" id="title" type="text" value="{$adContent.title}"></div>
+                                        </td>
+                                        <td class="v">
+                                            <!--<img src="images/vok.png"></td>-->
+                                    </tr>
+                    <tr>
+                        <th>位置说明</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="postionDes" id="postionDes" type="text" value="{$adContent.postion}"></div>
+                        </td>
+                        <td class="v">
+                            <!--<img src="images/vok.png"></td>-->
+                    </tr>
+                    <tr>
+                        <th>类型</th>
+                        <td class="form">
+                            <div class="input-control select">
+
+                                <select id="adTypeId" name="typeid" disabled="disabled">
+                                    <option>---请选择分类---</option>
+                                    <foreach name="typeList" item="typeList">
+                                    	<if condition="$typeList['id'] == $adContent['type']">
+                                    	<option value="{$typeList.id}" selected="selected">{$typeList.name}</option>
+                                    	<else />
+                                        <option value="{$typeList.id}">{$typeList.name}</option>
+                                    	</if>
+                                    </foreach>
+                                </select>
+                            </div>
+                            <input type="hidden" name="typeid" value="{$typeList.id}">
+                        </td>
+                        <td class="v">
+                            <!--<img src="images/verror.png" class="vok">您还没有选择类型</td>-->
+                    </tr>
+                    <tr>
+                        <th>广告尺寸</th>
+                        <td class="form">
+
+                            <if condition='($superAdmin neq null)'>
+                            <div class="text">宽：<input name="width" id="width" type="text" style="width:50px;" value="{$adContent.width}">px&nbsp;&nbsp;&nbsp;&nbsp;高：<input
+                                    name="height" id="height" type="text" style="width:50px;" value="{$adContent.height}" >px
+                            </div>
+                             <else />
+                                <div class="text">宽：<input name="width" id="width" type="text" style="width:50px;" value="{$adContent.width}" disabled="disabled">px&nbsp;&nbsp;&nbsp;&nbsp;高：<input
+                                        name="height" id="height" type="text" style="width:50px;" value="{$adContent.height}" disabled="disabled" >px
+                                </div>
+                            </if>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+
+
+
+                    <if condition="$adContent['infinite'] == 1">
+                    <tr>
+                        <th>投放日期</th>
+                        <td class="form">
+                            无限期
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <else />
+                    <tr>
+                        <th>投放日期</th>
+                        <td class="form">
+                            <div class="input-control text span2"><input name="startdate" id="sdatepicker" type="text"
+                                                                         class="dateInput" readonly value="{$adContent.startdate|date="Y-m-d",###}"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>结束日期</th>
+                        <td class="form">
+                            <div class="input-control text span2"><input name="enddate" id="edatepicker" type="text"
+                                                                         class="dateInput" readonly value="{$adContent.enddate|date="Y-m-d",###}"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </if>
+
+
+
+
+
+                </table>
+        </div>
+        </li>
+
+
+        <li id="ad_setting"><a href="#" class="title" >
+            广告设置
+        </a>
+            <div><table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+                    <tr>
+                        <th colspan="3" id="adType">
+
+                        </th>
+
+                    </tr>
+
+
+                </table></div></li>
+
+
+        <li><a href="#" class="title">
+            可选项
+        </a>
+            <div><table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th>投放商</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="poster" id="poster" type="text" value="{$adContent.poster}"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>联系人</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="contacts" id="contacts" type="text" value="{$adContent.contacts}"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>联系方式</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="contact" id="contact" type="text" value="{$adContent.contact}"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th>状态</th>
+                        <td class="form"><label class="input-control switch" onClick="">
+                            <if condition="$adContent['status'] == 1">
+                            <input type="checkbox" name="status" checked="checked"/>
+                            <else />
+                            <input type="checkbox" name="status"/>
+                            </if>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table></div></li></ul>
+                <input type="hidden" name="id" value="{$adContent.id}" />
+
+        <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                                                     value="重置"/><input
+                type="button" value="取消"/></div>
+
+
+        </form>
+            <input type="hidden" name="thisid" id="thisid" value="{$adContent.id}" />
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+
+</body>
+<script type="text/javascript">
+
+    $(document).ready( function () {
+        var typeId = $('#adTypeId').val() ? $('#adTypeId').val() : 1;
+        var adid = $('#ad_id').val();
+        changeModel(typeId,adid);
+        //加載日期控件
+        datepicker.new('sdatepicker');
+        datepicker.new('edatepicker');
+
+        //初始化
+       // changeModel(1);
+
+        $('#adTypeId').change(function () {
+            var tid = $(this).val();
+            var id = $('#ad_id').val();
+            changeModel(tid,id);
+        });
+
+        $("#dataform").validate({
+            rules: {
+                title: "required",
+                postionDes: "required",
+                width: {
+                    required: true,
+                    number :true
+                },
+                height : {
+                    required: true,
+                    number :true
+                }
+            },
+            submitHandler: function (form) {
+                //$(form).ajaxSubmit(function (data) {
+
+                    //这里处理回调
+
+                    $(form).ajaxSubmit(function (data) {
+                        if ( data.status ){
+                            alert('插入成功');
+                            location.href = "__APP__/Admin/Ad";
+                        }else{
+                            alert('插入失败');
+                        }
+                    });
+                //});
+            },
+            errorPlacement: function (error, element) {
+            }
+        });
+    });
+
+    /**
+     *
+     * @param tid        类型id
+     * @param id
+     */
+    function changeModel (tid,id){
+        $('#adType').load('__APP__/Admin/Ad/getAdSetup', {'tid': tid , 'id' : id}, function () {
+            $.getScript('{$js_dir}/pagecontrol.js');
+            $('#ad_setting').addClass('active');
+            $('.upload').each(function(){
+
+                var node = $(this);
+                node.change(function () {
+                    id = $(this).prop('id');
+                    ajaxFileUpload(id);
+                });
+
+
+            });
+        });
+    }
+
+    function ajaxFileUpload(id) {
+        $.ajaxFileUpload({
+            url: '__APP__/Admin/Upload/ajaxUpload',
+            secureuri: false,
+            fileElementId: id,
+            dataType: 'json',
+            complete: function (data, status) {
+            },
+            success: function (data, status) {
+                var src =window.SITE_URL + data.info[0].savepath + 'thumb_' + data.info[0].savename;
+                $('#preview-img-' + id ).prop( 'src', src );
+                var input_hidden = $('#hidden-'+id);
+                input_hidden.val(src);
+            }
+        })
+        return false;
+    }
+
+</script>
+
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+<include file="Tpl/Admin/default/nav.inc.html"/>
+<input type="hidden" id="category_id" value="{$categoryId}" />
+<div id="main-container">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0"
+           id="toolbar">
+        <thead>
+        <tr>
+            <td>
+                <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+            </td>
+            <td>
+                <button id="btn_new"><i class="icon-plus-2"></i> 新建</button>
+                <button id="btn_delete"><i class="icon-cancel"></i> 删除</button>
+            </td>
+            <!--<td>-->
+                <!--<form method="post" action="__APP__/Category/impFile" enctype="multipart/form-data">-->
+                    <!--<input type="file" name="file_stu" />-->
+                    <!--<button type="submit"  value="导入" />Excel导入数据</button>-->
+                <!--</form>-->
+            <!--</td>-->
+            <td>
+                频道总数：{$pindaoCount}
+            </td>
+            <td>
+                <button id="btn_ismenu"><i class=""></i>推荐频道</button>
+            </td>
+            <td>
+                <div class="input-control text">
+                    <input type="text" name="keyword" id="keyword" value="" />
+                    <button class="btn-search" id="btn-search" style="margin-left: -29px;"></button>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div id="right">
+        <include file="Tpl/Admin/default/Category/category-table.inc.html"/>
+        <!--end.right-->
+    </div>
+    <div class="pagination">
+        {$page}
+    </div>
+</div>
+<!--end.main-->
+
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+<input type="hidden" id="modelId" value="{$moduleId}" />
+
+<script type="text/javascript">
+$(function () {
+
+    categorySelectTree.init({$moduleId},{$type});
+
+
+    var SortableOptions = [{
+        appendTo: "parent",
+        axis: false,
+        connectWith: false,
+        containment: false,
+        cursor: "move",
+        helper: "clone"
+        /*
+         cursorAt: false,
+         dropOnEmpty: true,
+         forcePlaceholderSize: false,
+         forceHelperSize: false,
+         grid: false,
+         handle: false,
+         items: "> *",
+         opacity: false,
+         placeholder: false,
+         revert: false,
+         scroll: true,
+         scrollSensitivity: 20,
+         scrollSpeed: 20,
+         scope: "default",
+         tolerance: "intersect",
+         zIndex: 1000,
+         // callbacks
+         activate: null,
+         beforeStop: null,
+         change: changeFunc(),
+         deactivate: null,
+         out: null,
+         over: overFunc(),
+         receive: null,
+         remove: null,
+         sort: sortFunc(),
+         start: startFunc(),
+         stop: function(event, ui){
+         var activeClass = ui.item.prop('class');
+         alert("stop");
+         },
+         update: function(event, ui){
+         var activeClass = ui.item.prop('class');
+         alert("update");
+         }
+         */
+    }];
+
+    $('#datalist .datalistclass').sortable(SortableOptions);
+
+
+    $('#datalist .datalistclass').on( "sortupdate",
+            function( event, ui ) {
+                var sortedIDs = $(this).sortable("toArray");
+                $.post('__APP__/Admin/Category/sortCategory', {'after': sortedIDs}, function (data) {
+
+//                            alert(data);
+                });
+            }
+    );
+
+        $("#btn_ismenu").live("click",function(){
+        var modelId = $("#modelId").val();
+        $.post('__APP__/Admin/Category/ajaxSearchIsmenu', { 'moduleId':modelId}, function (data) {
+            $("#right").html(data.info);
+//                            alert(data);
+        });
+    });
+    $("#btn-search").live("click",function(){
+
+                var keyword = $("#keyword").val();
+                var modelId = $("#modelId").val();
+                if(keyword == "" || keyword == null){
+//                        alert("关键字为空");
+                    return ;
+                }
+                if(keyword.toUpperCase() == 'ALL'){
+                    keyword = "";
+                }
+
+//                    alert(keyword);
+                $.post('__APP__/Admin/Category/ajaxSearchCategory', {'keyword': keyword , 'moduleId':modelId}, function (data) {
+                    $("#right").html(data.info);
+//                            alert(data);
+                });
+            }
+    );
+
+
+    //小X
+    $('.del').click(function () {
+        var ids = new Array();
+        var id = $(this).attr('id').split('_')[2];
+        ids.push(id);
+        $.Dialog({
+            'title'      : '{:C('DELETE_MESSAGE_TITLE')}',
+            'draggable'  : true,
+            'content'    : '{:C('DELETE_MESSAGE_DELSOME')}',
+            'buttons'    : {
+                '{:C('DELETE_MESSAGE_SUBMIT')}'    : {
+                    'action': function(){
+
+                        $.post('__APP__/Admin/Category/deleteCategory', {'PageIds': ids}, function (data) {
+                            var status = data.status;
+                            var info = data.info;
+
+                            if (status) {
+                                location.reload();
+                            } else {
+                                alert(info);
+                            }
+                        });
+                    }
+                },
+                '{:C('DELETE_MESSAGE_CANCEL')}'     : {
+                    'action': function(){}
+                }
+            }
+        });
+
+
+    });
+
+    //删除按钮
+    $('#btn_delete').click(function () {
+        $.Dialog({
+            'title'      : '{:C('DELETE_MESSAGE_TITLE')}',
+            'draggable'  : true,
+            'content'    : '{:C('DELETE_MESSAGE_DELSOME')}',
+            'buttons'    : {
+                '{:C('DELETE_MESSAGE_SUBMIT')}'    : {
+                    'action': function(){
+
+                        //删除操作
+                        var ids = new Array();
+                        $("input[name='Page_checkbox']:checked").each(function () {
+                            var id = $(this).attr('id').split('_')[1];
+                            ids.push(id);
+                        });
+
+
+                        $.post('__APP__/Admin/Category/deleteCategory', {'PageIds': ids}, function (data) {
+                            var status = data.status;
+                            var info = data.info;
+                            if (status) {
+                                location.reload();
+                            } else {
+                                alert(info);
+                            }
+                        });
+                        //删除操作结束
+                    }
+                },
+                '{:C('DELETE_MESSAGE_CANCEL')}'     : {
+                    'action': function(){}
+                }
+            }
+        });
+
+    });
+
+    //checkall
+    $('#check_all').click(
+            function () {
+                $("input[name='Page_checkbox']").prop('checked',
+                        $(this).prop("checked"));
+            });
+
+        $('#btn_new').click(function (e) {
+            var moId = {$_GET['moduleId']};
+            if(moId==19){
+                document.location = '__APP__/Admin/Category/create_new/moduleId/'+moId;
+            }else{
+                document.location = '__APP__/Admin/Category/create/moduleId/'+moId;
+            }
+
+        });
+
+
+});
+
+
+
+
+</script>

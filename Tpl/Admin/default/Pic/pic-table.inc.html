@@ -1,0 +1,56 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="datalist">
+
+    <thead>
+    <tr>
+        <th class="checkbox">
+            <input type="checkbox" name="" id="check_all">
+        </th>
+        <th class="pic">图片</th>
+        <th>名称</th>
+        <th class="date headerSortUp">发布日期</th>
+        <!--<th class="hits">浏览量</th>-->
+        <!--<th class="remind">评论</th>-->
+        <th class="public">状态</th>
+        <th class="public">操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <foreach name="picList" item="vo">
+        <tr>
+            <td class="checkbox"><input type="checkbox" name="pic_checkbox" id="pic_{$vo.id}"></td>
+            <td class="pic"  id="pic-{$vo.id}">
+                <if condition="($vo.images neq null)">
+                    <img src="__APP__/{$vo.images}" id="pic{$vo.id}" class="image" />
+                    <i class="icon-pictures"></i>
+                </if>
+                <!--<i class="icon-pictures"></i>-->
+            </td>
+            <td><a href="__APP__/Admin/Pic/edit/id/{$vo.id}">{$vo.pic_name}</a>&nbsp;&nbsp;<a
+                    href="javascript:void(0)" id="picDelete_{$vo.id}" class="del">&times;</a></td>
+
+            <td class="date">{$vo.date|date="Y-m-d",###}</td>
+            <!--<td class="hits">{$vo.counter}</td>-->
+            <!--<td class="remind">-->
+                <!--<if condition="$vo['countMessage'] != 0">-->
+                    <!--<a href="{:U('Product/comment?id='.$vo['id'])}">{$vo.countMessage}条</a>-->
+                <!--</if>-->
+            <!--</td>-->
+            <td>
+                <!--状态-->
+            <span class="verify" id="verify_{$vo.id}">
+            <if condition="$vo['type'] == 0">
+                <span class="stop">已下架</span>
+                <else />
+                <span class="run">已开启</span>
+            </if>
+            </span>
+            </td>
+            <td>
+                <a href="__APP__/Admin/Pic/copy/id/{$vo.id}">复制</a>
+            </td>
+        </tr>
+    </foreach>
+    </tbody>
+</table>

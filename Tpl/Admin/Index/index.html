@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+        <div id="left">
+            <div id="addShortcut">
+                <ul class="helix">
+                    <foreach name="testList" item="vo">
+                        <li>
+                            <div class="addShortcutIcon">
+                                <div><img src="{$images_dir}/minion.png" width="65px;"></div>
+                            </div>
+                            <div class="addShortcutDesc"><a href="__APP__/{$vo.filename}" target="_blank"><h3>{$vo.title}</h3></a>
+                                文件大小为：{$vo.filesize}bytes，文件日期：{$vo.newsTime|date="Y-m-d H:i:s",###}&nbsp;&nbsp;
+                            <a href="__APP__/{$vo.url}" target="_blank"><button>数据更新 </button><br>最新数据大小<b <if condition="$vo[newsSize] gt $vo[filesize]">style="color:red;"</if>>{$vo.newsSize}</b>bytes</a>
+                            </div>
+                        </li>
+                    </foreach>
+                </ul>
+            </div>
+
+            <link href="{$css_dir}/stroll.css" rel="stylesheet" type="text/css" media="all" charset="utf-8"/>
+
+            <!--end.webstate-->
+        </div>
+
+        <!--流量统计图表-->
+        <div id="right">
+            <include file="Tpl/Admin/default/mod.inc.html"/>
+            <!--end.part-->
+            <!--<div class="part">-->
+                <!--<div id="analysis">-->
+                    <!--<h3>流量统计</h3>-->
+                    <!--<div id="container1" style="height: 200px;">-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<canvas id="chart"  height="200px" ></canvas>&ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--end.part-->
+        </div>
+        <!--end.right-->
+    </div>
+    <!--end.maincontainer-->
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+</body>
+
+<script type="text/javascript" src="{$js_dir}/stroll.min.js"></script>
+
+</html>

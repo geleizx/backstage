@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+
+        <div id="right">
+            <form id="dataform" method="post" action="{:U('Page/add')}">
+
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        必填项
+                    </a>
+                        <div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th>页面标题</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="title" id="title" type="text"
+                                                                   value="{$page.title}"></div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr>
+                        <th>所属分类</th>
+                        <td class="form">
+                            <div class="input-control text"><input id="category_name" name="category_name"
+                                                                   readonly=readonly type="text"
+                                                                   value="{$category.catname}"/></div>
+                            <input id="category_id" name="category_id" value="{$page.cat_id}" type="hidden"/>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr>
+                        <th>页面内容</th>
+                        <td class="form">
+                            <script id="editor" name="editor" type="text/plain">
+                                {$page.content|htmlspecialchars_decode}
+                            </script>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+
+                    </table>
+                        </div>
+                    </li>
+                    <li><a href="#" class="title">
+                        可选项
+                    </a>
+                        <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+                    <if condition="$pageSwitch['keywords'] == 1">
+                    <tr>
+                        <th>关键字</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="keywords" id="keywords" type="text"
+                                                                   value="{$page.keywords}"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </if>
+
+                    <if condition="$pageSwitch['description'] == 1">
+                    <tr>
+                        <th>描述</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="description" id="description" type="text"
+                                                                   value="{$page.description}"></div>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                          </if>
+                            <!--   页面中不需要设置发布日期    by Ray
+                                     <th>发布日期</th>
+                                     <td class="form">
+                                         <if condition="$page.inputtime neq null">
+                                             <input name="create_date" id="datepicker" type="text" class="dateInput"
+                                                    value="{$page.inputtime|date='Y-m-d',###}">
+                                             <else/>
+                                             <input name="create_date" id="datepicker" type="text" class="dateInput"
+                                                    value="">
+                                         </if>
+
+                                     </td>
+                                     <td>&nbsp;</td>
+                                     </tr>-->
+                                         </table>
+                                         </div>
+                                     </li>
+
+                                 </ul>
+
+                                 <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                                                                              value="重置"/><input
+                                         type="button" value="取消"/></div>
+                             </form>
+
+
+                         </div>
+                         <!--end.right-->
+    </div>
+</div>
+
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+<div id="dialog-div" style="display:none"></div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        category.init(3);
+        datepicker.new('datepicker');
+        var editor = beditor.new('editor');
+
+        $('#ratio').change(function () {
+            if ($('#preview-img').prop('src') != '')
+                jcorp.renewApi();
+        });
+
+        $('#fileField').live('change', function () {
+            ajaxFileUpload();
+        });
+
+        var validator = $("#dataform").validate({
+            rules: {
+                title: "required",
+                content: {
+                    required: true
+                }
+            },
+            submitHandler: function (form) {
+                editor.sync();
+                $(form).ajaxSubmit(function (data) {
+                    var status = data.status;
+                    var info = data.info;
+                    if (status) {
+                        alert("插入成功");
+                        location.href = "__APP__/Admin/Page/";
+                    } else {
+                        alert(data.info);
+                    }
+
+                });
+            },
+            errorPlacement: function (error, element) {
+
+            }
+
+        });
+
+        $('#reset_btn').click(function () {
+            editor.setContent('');
+            validator.resetForm();
+            $('.valid').removeClass('valid');
+            $('.error').removeClass('error');
+            datepicker.new('datepicker');
+        })
+    });
+    function ajaxFileUpload() {
+        $.ajaxFileUpload({
+            url: window.SITE_URL + '/Admin/Upload/ajaxUpload',
+            secureuri: false,
+            fileElementId: 'fileField',
+            dataType: 'json',
+            complete: function (data, status) {
+            },
+            success: function (data, status) {
+                $('#preview-img').show();
+                $('#preview-img').attr('src', window.SITE_URL + '/uploads/thumb_' + data.info[0].savename);
+                $('#picture').val(window.SITE_URL + '/uploads/thumb_' + data.info[0].savename);
+                jcorp.renewApi();
+            },
+            error: function (data, status, e) {
+                alert("上传失败");
+            }
+        })
+        return false;
+    }
+</script>
+</html>

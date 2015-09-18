@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Tpl/Admin/default/header.inc.html" />
+    <script type="text/javascript" src="{$Think.CONST.BASEURL}Tpl/Admin/Public/js/jquery.bigautocomplete.js"></script>
+    <link href="{$Think.CONST.BASEURL}Tpl/Admin/Public/css/jquery.bigautocomplete.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="metrouicss">
+	<include file="Tpl/Admin/default/top.inc.html" />
+	<div id="main">
+		<include file="Tpl/Admin/default/nav.inc.html" />
+		<div id="main-container">
+
+			<table width="100%" border="0" cellspacing="0" cellpadding="0"
+				id="toolbar">
+				<tr>
+					<td class="breadCrumb">
+						<p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+					</td>
+					<td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+					</td>
+				</tr>
+			</table>
+
+			<div id="right">
+				<form action="__APP__/Admin/Category/add" method="post" id="dataform">
+					<input type="hidden" name="x" id="x" value="">
+					<input type="hidden" name="y" id="y" value="">
+
+					<input type="hidden" name="x2" id="x2" value="">
+					<input type="hidden" name="y2" id="y2" value="">
+
+					<input type="hidden" name="w" id="w" value="">
+					<input type="hidden" name="h" id="h" value="">
+
+                    <input type="hidden" name="moduleid" id="moduleid" value="{$moduleid}"/>
+
+					<input type="hidden" name="picture" id="picture" value=""/>
+
+
+                    <ul class="accordion" data-role="accordion">
+                        <li class="active"><a href="#" class="title">
+                            必填项
+                        </a>
+                            <div>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                                    <tr>
+                                        <th>分类名称</th>
+                                        <td class="form">
+                                            <div class="input-control text">
+                                                <input type="text" id="catname" name="catname"  value="{$category.catname}"/>
+                                            </div>
+                                        </td>
+                                        <td><img id="catname_ico" src="{$images_dir}/vok.png" style="display: none;"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>所属分类</th>
+                                        <td class="form">
+                                            <div class="input-control select">
+                                                <input name="category_id" id="category_id" type="hidden" value="{$parent.catid}">
+                                                <input  id="category_name" name="category_name" readonly="readonly" class="required"  value="{$parent.catname}" type="text">
+                                            </div>
+                                        </td>
+                                        <td><input type="text" id="tt" value=""   placeholder="分类关键词搜索"/>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>开启</th>
+                                        <td class="form">
+                                            <label class="input-control switch" onClick="">
+                                                <if condition="$category.status eq 0">
+                                                    <input class="status" name="status" type="checkbox" value="1" />
+                                                    <span class="helper">Off</span>
+                                                    <else />
+                                                    <input class="status" name="status" type="checkbox" checked="checked" value="1" />
+                                                    <span class="helper">On</span>
+
+                                                </if>
+                                                <!-- <input type="checkbox" checked="checked" id="status" name="status" value="{$category.status}"/> <span
+                                                     class="helper">&nbsp;</span>-->
+                                            </label>
+
+                                        </td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>显示顺序(a~z)</th>
+                                        <td class="form">
+                                            <div class="input-control text">
+                                                <input type="text" id="listorder" name="listorder" value="{$category.listorder}"/>
+                                            </div>
+                                        </td>
+                                        <td><img id="listorder_ico" src="{$images_dir}/vok.png" style="display: none;"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>是否做为推荐(*必须开启)</th>
+                                        <td class="form">
+
+                                            <label class="input-control switch" onClick="">
+                                                <if condition="$category.status eq 2">
+                                                    <input class="is_nav" name="is_nav" type="checkbox" checked="checked" value="2" />
+                                                    <span class="helper">On</span>
+                                                    <else />
+                                                    <input class="is_nav" name="is_nav" type="checkbox" value="2" />
+                                                    <span class="helper">Off</span>
+                                                </if>
+                                                <!--<input type="checkbox" checked="checked" id="is_nav" name="is_nav" value="2"/> <span-->
+                                                <!--class="helper">&nbsp;</span>-->
+                                            </label>
+
+                                        </td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th>上传图标</th>
+                                        <td class="form"><input type="file" name="fileField"
+                                                                id="fileField" accept="image/*"  ></td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <td class="form">
+                                            <if condition="$category.image neq null">
+                                                <img id="preview-img" style="display:;" src=" {$category.image}">
+                                                <else />
+                                                <img src="" id="preview-img" />
+                                            </if>
+                                        </td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th>是否显示图标</th>
+                                        <td class="form">
+
+                                            <label class="input-control switch" onClick="">
+                                                <if condition="$category.islogo eq 1">
+                                                    <input class="is_nav" name="islogo" type="checkbox" checked="checked" value="1" />
+                                                    <span class="helper">On</span>
+                                                    <else />
+                                                    <input class="is_nav" name="islogo" type="checkbox" value="0" />
+                                                    <span class="helper">Off</span>
+                                                </if>
+                                                <!--<input type="checkbox" checked="checked" id="is_nav" name="is_nav" value="2"/> <span-->
+                                                <!--class="helper">&nbsp;</span>-->
+                                            </label>
+
+                                        </td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <!--<tr>-->
+                                        <!--<th>缩略图尺寸</th>-->
+                                        <!--<td class="form"><span class="input-control select">-->
+									<!--<select name="ratio" id="ratio">-->
+                                        <!--<option value="230_128">230*128</option>-->
+
+                                    <!--</select>-->
+							<!--</span></td>-->
+                                        <!--<td>&nbsp;</td>-->
+                                    <!--</tr>-->
+
+                                    <tr>
+                                        <th>发布日期</th>
+                                        <td class="form"><input name="create_date" id="datepicker"
+                                                                type="text" class="dateInput" value="" readonly></td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                    </table>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="buttons"><input type="submit" value="确认"><input type="reset" value="重置"></div>
+                </form>
+				</form>
+			</div><!--end.right-->
+</div>
+</div><!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html" />
+</body>
+
+<script type="text/javascript">
+$(function() {
+
+
+    //给File控件绑定change事件。 用 live 。
+    $('#fileField').live('change',function(){
+        ajaxFileUpload();
+    });
+
+    //加载第一类缓存
+    category.init('{$moduleid}');
+
+	$('#fileField').live('change',function(){
+		ajaxFileUpload();
+	});
+
+	$('#ratio').change(function(){
+        if ( $('#preview-img').prop('src') != '' )
+		    jcorp.renewApi();
+	});
+
+    datepicker.new('datepicker');
+
+    $('#dataform').validate({
+        rules: {
+            catname:{
+               required:true,
+               maxlength:30
+            } ,
+            alias:{
+               required:true,
+               maxlength:30
+            } ,
+            category_name: {
+                required: true
+            },
+
+            listorder: {
+                required: true,
+                digits:true
+            }
+        },
+        errorPlacement: function(error, element) {
+        },
+        submitHandler: function (form) {
+            $(form).ajaxSubmit(function (data) {
+                var status = data.status;
+                var info = data.info;
+
+                if (status){
+                    alert("插入成功");
+                    location.href="__APP__/Admin/Category/index/moduleId/2";
+                }else{
+                    alert(data.info);
+                }
+
+            });
+        }
+    });
+});
+
+
+function ajaxFileUpload() {
+    $.ajaxFileUpload({
+        url: window.SITE_URL + '/Admin/Upload/ajaxUpload',
+        secureuri: false,
+        fileElementId: 'fileField',
+        dataType: 'json',
+        complete: function (data, status) {
+        },
+        success: function (data, status) {
+            $('#preview-img').show();
+            $('#preview-img').attr('src', window.SITE_URL + data.info[0].savepath + 'thumb_' + data.info[0].savename);
+            $('#picture').val(window.SITE_URL + data.info[0].savepath + 'thumb_' + data.info[0].savename);
+            jcorp.renewApi();
+        },
+        error: function (data, status, e) {
+            alert("上传失败");
+        }
+    })
+    return false;
+}
+</script>
+<script>
+    $(function(){
+            $("#tt").bigAutocomplete({
+                url: "__APP__/Admin/Category/ajaxCategory",
+                width: 142,
+                callback: function (data) {
+                    $('#category_id').val(data.id);
+                    $('#category_name').val(data.title);
+                }
+            });
+    });
+</script>
+<div id="dialog-div" style="display:none">
+</div>
+
+
+</html>

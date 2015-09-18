@@ -1,0 +1,57 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="datalist">
+
+    <thead>
+    <tr>
+        <th class="checkbox"><input type="checkbox" name="check_all" id="check_all"></th>
+        <th>标题</th>
+        <th>内容</th>
+        <th>姓名</th>
+        <th class="headerSortUp date">发表日期</th>
+        <th class="hits">手机号</th>
+        <th class="hits">微信号</th>
+        <th class="hits">QQ号</th>
+        <!--<th class="remind">分类</th>-->
+        <!--<th class="public">状态</th>-->
+        <!--<th class="public"><a href="#">回复</a></th>-->
+    </tr>
+    </thead>
+
+    <tbody>
+
+
+    <foreach name="feedbackList" item="feedbackList">
+        <tr>
+            <td class="checkbox"><input type="checkbox" name="reply_checkbox" id="replycheckbox_{$feedbackList.id}"></td>
+            <td>
+                <!--标题-->
+                <a href="javascript:void(0)" class="reply" id="reply_{$feedbackList.id}">{$feedbackList.title}</a>&nbsp;&nbsp;<a href="javascript:void(0)" id="productDelete_{$feedbackList.id}" class="del">&times;</a>
+            </td>
+            <td>
+                <!--标题-->
+                {$feedbackList.comment.content|htmlspecialchars_decode}
+            </td>
+            <td>
+                <!--留言人-->
+                {$feedbackList.vistor}
+            </td>
+            <td>
+                <!--发表日期-->
+                {$feedbackList.date|date="Y-m-d",###}
+            </td>
+            <td>
+                <!--联系方式-->
+                {$feedbackList.contact}
+            </td>
+            <td>
+                <!--联系方式-->
+                {$feedbackList.weixin}
+            </td>
+            <td>
+                <!--联系方式-->
+                {$feedbackList.qq}
+            </td>
+
+        </tr>
+    </foreach>
+    </tbody>
+</table>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td class="breadCrumb">
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td>
+                    <!--<button id="newDialog"><i class="icon-plus-2"></i> 快建</button>-->
+                    <button id="btn_delete"><i class="icon-cancel"></i> 删除</button>
+                </td>
+                <td>
+                    <div class="input-control text">
+                        <input type="text" name="keyword" id="keyword"/>
+                        <button class="btn-search" id="btn-search" style="margin-left:-29px;"></button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div id="right">
+            <include file="Tpl/Admin/default/Ad/ad-table.inc.html"/>
+
+        </div>
+        <!--end.right-->
+    </div>
+
+</div>
+<!--end.right-->
+</div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+<script type="text/javascript">
+
+
+    $("#btn-search").live("click",function(){
+
+                var keyword = $("#keyword").val();
+                if(keyword == "" || keyword == null){
+//                        alert("关键字为空");
+                    return ;
+                }
+
+                if(keyword.toUpperCase() == 'ALL'){
+                    keyword = "";
+                }
+
+//                    alert(keyword);
+                $.post('__APP__/Admin/Ad/ajaxSearchAd', {'keyword': keyword }, function (data) {
+                    $("#right").html(data.info);
+//                            alert(data);
+                });
+            }
+    );
+
+
+    $('#check_all').click(
+            function () {
+                $("input[name='ad_checkbox']").prop('checked',
+                        $(this).prop("checked"));
+            });
+
+    $('#datalist').tablesorter({
+        headers: { 0: { sorter: false}}
+    });
+    //删除按钮
+    $('#btn_delete').click(function () {
+        // dialog开始
+        $.Dialog({
+            'title'      : '操作确认',
+            'draggable'  : true,
+            'content'    : '确定要删除这些内容吗？',
+            'buttons'    : {
+                '确定'    : {
+                    'action': function(){
+                        //删除操作
+                        var ids = new Array();
+                        $("input[name='ad_checkbox']:checked").each(function () {
+                            var id = $(this).attr('id').split('_')[1];
+                            ids.push(id);
+                        });
+                        $.post('/Admin/Ad/deleteAds', {'adIds': ids}, function (data) {
+                            var status = data.status;
+                            var info = data.info;
+                            if (status) {
+                               location.reload();
+                            } else {
+                                alert(info);
+                            }
+                        });
+                        //删除操作结束
+                    }
+                },
+                '取消'     : {
+                    'action': function(){}
+                }
+            }
+        });
+        // dialog 结束
+    });
+</script>
+</body>
+</html>

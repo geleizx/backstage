@@ -1,0 +1,77 @@
+<!-- ICE 图片广告部分页面 -->
+<div data-role="page-control" class="page-control span10">
+    <span class="menu-pull"></span>
+
+    <div class="menu-pull-bar">页面 1</div>
+
+    <ul>
+        <li class="active"><a class="switch" id="page_1" href="#page1">图片形式</a></li>
+        <li><a class="switch" id="page_2" href="#page2">Flash形式</a></li>
+    </ul>
+
+    <div class="frames">
+        <div id="page1" class="frame active">
+            <table>
+                <tr>
+                    <th>上传图片</th>
+                    <td class="form"><input type="file"  id="No1_imgsrc" name="No1_imgsrc_temp" class="upload"> <input type="hidden" name="No1_imgsrc"  id="hidden-No1_imgsrc" value='{$adContent.flag_imgsrc}'></td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <if condition="$adContent['flag_imgsrc']">
+                    <td class="form"><img src="{$adContent.flag_imgsrc}" id="preview-img-No1_imgsrc" class="preview-img"></td>    
+                    <else />
+                    <td class="form"><img src="{$images_dir}/noimg.jpg" id="preview-img-No1_imgsrc" class="preview-img"></td>
+                    </if>
+                </tr>
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="No1_linkurl" id="No1_linkurl" type="text" value="{$adContent.flag_linkurl}"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="No1_des" id="No1_des" type="text" value="{$adContent.flag_des}"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="page2" class="frame">
+            <table>
+                <tr>
+                    <th>上传Flash</th>
+                    <td class="form">
+                        <input type="file" name="No2_flashsrc" id="fileField" class="">
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="No2_linkurl" id="No2_linkurl" type="text" value="{$adContent.flag_linkurl}"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="No2_des" id="No2_des" type="text" value="{$adContent.flag_des}"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</td>
+</tr>
+<input type="hidden" name="swtich" id="switch" value="page_1" />
+<script type="text/javascript" >
+$(function(){
+   $('.switch').click(function(){
+        $('#switch').val($(this).prop('id'));
+   });
+});
+</script>
+
+

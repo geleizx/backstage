@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+
+
+<div id="main-container">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+        <tr>
+            <td>
+                <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+            </td>
+            <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+            </td>
+        </tr>
+    </table>
+<div id="right">
+<form id="dataform" enctype="multipart/form-data"  action="__APP__/Admin/Seo/commit" method="post">
+     <input type="hidden" value="{$seo.id}" id="id" name="id">
+    <ul class="accordion" data-role="accordion">
+        <li class="active"><a href="#" class="title">
+            必填项
+        </a>
+            <div>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th>语言</th>
+                        <td class="form">
+                            <div class="input-control text">
+                                <!--<tagLib name="html"/>-->
+                                <html:select options='lang_code' selected='langC' name="lang" id="lang_id"/>
+                                   <!--<input name="title" id="title" type="text" value="{$seo.title}">-->
+                            </div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr>
+                      <th>网站标题</th>
+                      <td class="form"><div class="input-control text"><input name="title" id="title" type="text" value="{$seo.title}"></div></td>
+                      <td class="v"></td>
+                    </tr>
+                    <tr>
+                      <th>网站关键字</th>
+                      <td class="form"><div class="input-control text"><input name="keyword" id="keyword" type="text" value="{$seo.keyword}"></div></td>
+                      <td class="v"></td>
+                    </tr>
+                    <tr>
+                      <th>网站描述</th>
+                      <td class="form"><div class="input-control text"><input name="description" id="description" type="text" value="{$seo.description}"></div></td>
+                      <td class="v"></td>
+                    </tr>
+
+       </table>
+</div>
+    </li>
+    <li><a href="#" class="title">
+        登陆搜索引擎
+    </a>
+        <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+           <tr>
+               <th colspan="3" class="seoLinkGroup">
+                   <a href="http://www.baidu.com/search/url_submit.htm" target="new" title="百度"><img alt="百度" width="93" height="51" src="/Public/images/seo_baidu.jpg"></a>
+                   <a href="http://www.google.cn/intl/zh-CN/add_url.html" target="new" title="谷歌"><img src="/Public/images/seo_google.jpg" alt="谷歌" width="93" height="51"></a>
+                   <a href="http://www.bing.com/toolbox/submit-site-url" target="new" title="必应"><img src="/Public/images/seo_bing.jpg" alt="必应" width="93" height="51"></a>
+                   <a href="http://www.sogou.com/feedback/urlfeedback.php" target="new" title="搜狗"><img src="/Public/images/seo_sogou.jpg" alt="搜狗" width="93" height="51"></a>
+                   <a href="http://www.soso.com/help/usb/urlsubmit.shtml" target="new" title="搜搜"><img src="/Public/images/seo_soso.jpg" alt="搜搜" width="93" height="51"></a>
+                   <a href="http://tellbot.youdao.com/report" target="new" title="有道"><img src="/Public/images/seo_youdao.jpg" alt="有道" width="93" height="51"></a>
+                   <a href="http://info.so.360.cn/site_submit.html" target="new" title="360"><img src="/Public/images/seo_360.jpg" alt="360搜索" width="93" height="51"></a>
+               </th>
+       </tr>
+       </table>
+</div>
+    </li>
+
+    </ul>
+
+    <div class="buttons"><input type="submit" value="确认"/><input type="reset" value="重置"/></div>
+    </form>
+</div><!--end.right-->
+</div>
+</div><!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+<script type="text/javascript" >
+$(document).ready(function(){
+    $("#dataform").validate({
+        rules: {
+            title: "required",
+            keyword: "required",
+            description: "required"
+        },
+        errorPlacement: function(error, element) {
+        },
+        submitHandler: function (form) {
+
+            $(form).ajaxSubmit(function (data) {
+                var status = data.status;
+                var info = data.info;
+
+                if (status){
+                    alert("提交成功！");
+                }else{
+                    alert(data.info);
+                }
+            });
+        }
+    });
+});
+
+    $("#lang_id").live('change',function(){
+        var langStr = $(this).val();
+        location.href='__APP__/Admin/Seo?lang='+langStr;
+    });
+
+</script>
+</body>
+</html>

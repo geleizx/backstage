@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+        <div id="right">
+            <form enctype="multipart/form-data" action="__APP__/Admin/News/add" method="post" id="dataform">
+                <input type="hidden" name="x" id="x" value="">
+                <input type="hidden" name="y" id="y" value="">
+
+                <input type="hidden" name="x2" id="x2" value="">
+                <input type="hidden" name="y2" id="y2" value="">
+
+                <input type="hidden" name="w" id="w" value="">
+                <input type="hidden" name="h" id="h" value="">
+
+                <input type="hidden" name="picture" id="picture" value=""/>
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        必填项
+                    </a>
+                        <div>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                                <tr>
+                                    <th>页面标题</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="news_title" id="news_title" type="text" value="{$news.title}"
+                                                                               class="required"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>所属分类</th>
+                                    <td class="form">
+                                        <div class="input-control select">
+                                            <div class="input-control text">
+                                                <input name="category_id" id="category_id" type="hidden" value="{$categoryInfo.catid}" />
+
+                                                <input  id="category_name" name="category_name" readonly="readonly" class="required"  type="text" value="{$categoryInfo.catname}" />
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="v" id="v_category_name"></td>
+                                </tr>
+                                <tr>
+                                    <th>页面内容</th>
+                                    <td class="form">
+                                        <script id="editor" type="text/plain"> {$news.newsdata.content|htmlspecialchars_decode} </script>
+                                    </td>
+                                    <td class="v" id="v_content"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                    <li><a href="#" class="title">
+                        可选项
+                    </a>
+                        <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <if condition="$pageSwitch['description'] == 1">
+                                <tr>
+                                    <th>简述</th>
+                                    <td class="form">
+                                        <div class="input-control text"><textarea id="description" name="description">{$news.description|htmlspecialchars_decode}</textarea>
+                                        </div>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </if>
+                            <if condition="$pageSwitch['keywords'] == 1">
+                                <tr>
+                                    <th>关键字</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="keywords" id="keywords" type="text" value="{$news.keywords|htmlspecialchars_decode}"></div>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </if>
+                            <if condition="$pageSwitch['thumb'] == 1">
+                                <tr>
+                                    <th>上传图片</th>
+                                    <td class="form">
+                                        <input type="hidden" value='0' name="is_change" id="is_change">
+                                        <input type="file" name="fileField" id="fileField" accept="image/*">
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <th>&nbsp;缩略图</th>
+                                    <td class="form">
+                                        <if condition = "($news.thumb eq null)">
+                                            <td class="form"><img id="preview-img" style="display: none; "></td>
+                                            <else/>
+                                            <img id="preview-img" src="__APP__/{$news.thumb}"></td>
+                            </if>
+
+                            <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th>缩略图尺寸</th>
+                                <td class="form"><span class="input-control select">
+        <select name="ratio" id="ratio">
+            <option value="112_87">112*87</option>
+        </select>
+      </span></td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            </if>
+                            <if condition="$pageSwitch['ishot'] == 1">
+                                <tr>
+                                    <th>是否推荐到首页</th>
+                                    <td class="form"><label class="input-control switch" onClick="">
+                                        <if condition="$news['ishot'] == 1">
+                                            <input type="checkbox" id="ishot" name="ishot" checked="checked"/>
+                                            <span class="helper">&nbsp;</span>
+                                            <else />
+                                            <input type="checkbox" id="ishot" name="ishot"/>
+                                            <span class="helper">&nbsp;</span>
+                                        </if>
+                                    </label></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </if>
+                            <if condition="$pageSwitch['status'] == 1">
+                                <tr>
+                                    <th>状态</th>
+                                    <td class="form"><label class="input-control switch" onClick="">
+                                        <if condition="$news['status'] == 1">
+                                            <input type="checkbox" id="status" name="status" checked="checked" />
+                                            <else />
+                                            <input type="checkbox" id="status" name="status" />
+                                        </if>
+                                        <span class="helper">&nbsp;</span>
+                                    </label></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </if>
+                            <if condition="$pageSwitch['releasedate'] == 1">
+                                <tr>
+                                    <th>发布日期</th>
+                                    <td class="form"><input name="create_date" id="datepicker" type="text" class="dateInput"
+                                                            value="{$news.inputtime|date='Y-m-d',###}" readonly></td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </if>
+                        </table>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                                                             value="重置"/><input
+                        type="button" value="取消"/></div>
+            </form>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+
+</body>
+
+<script type="text/javascript">
+    $(function () {
+        $('.share_btn').click(function(){
+            var id = $(this).prop('id');
+            var idarr = id.split('_');
+            var replace = idarr[idarr.length - 1];
+            var replacement = '';
+
+            if (replace == 'on'){
+                replacement =  'off';
+            }else{
+                replacement = 'on';
+            }
+            var newid = id.replace(replace,replacement);
+
+            $(this).prop('id',newid);
+        });
+
+        editor = beditor.new('editor', 'admin');
+        //加载第一类缓存
+        category.init(19);
+        //给File控件绑定change事件。 用 live 。
+        $('#fileField').live('change', function () {
+            ajaxFileUpload();
+        });
+
+        //改变分辨率的时候重新剪裁
+        $('#ratio').change(function () {
+            if ($('#preview-img').prop('src') != '')
+                jcorp.renewApi();
+        })
+
+        datepicker.new('datepicker');
+
+
+        var validator  =  $("#dataform").validate({
+            rules: {
+                news_title: "required",
+                category_name: "required",
+                content: {
+                    required: true
+                }
+            },
+            submitHandler: function (form) {
+                editor.sync();
+                if ( $('#category_id').val() == null || $('#category_id').val() == ''){
+                    $('#category_name').removeClass('valid').addClass('error');
+                    return false;
+                }
+
+                $(form).ajaxSubmit(function (data) {
+                    var status = data.status;
+                    var info = data.info;
+
+                    if (status) {
+                        alert("插入成功");
+                        location.href = "__APP__/Admin/News/";
+                    } else {
+                        alert(data.info);
+                    }
+                });
+            },
+            errorPlacement: function (error, element) {
+            }
+        });
+
+        $('#reset_btn').click(function () {
+            editor.setContent('');
+            validator.resetForm();
+            $('.valid').removeClass('valid');
+            $('.error').removeClass('error');
+            datepicker.new('datepicker');
+        })
+
+    });
+
+    function ajaxFileUpload() {
+        $.ajaxFileUpload({
+            url: window.SITE_URL + '/Admin/Upload/ajaxUpload',
+            secureuri: false,
+            fileElementId: 'fileField',
+            dataType: 'json',
+            complete: function (data, status) {
+            },
+            success: function (data, status) {
+                $('#preview-img').show();
+                $('#preview-img').attr('src', window.SITE_URL + data.info[0].savepath + 'thumb_' + data.info[0].savename);
+                $('#picture').val(window.SITE_URL + data.info[0].savepath + 'thumb_' + data.info[0].savename);
+                jcorp.renewApi();
+            },
+            error: function (data, status, e) {
+                alert("上传失败");
+            }
+        })
+        return false;
+    }
+
+</script>
+
+<div id="dialog-div" style="display:none">
+</div>
+</html>

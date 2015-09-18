@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+
+        <div id="classlist">
+            <h3>
+                快搜分类
+            </h3>
+            <div>
+                <div class="left">
+                    <div id="category_new"> <i class="icon-plus-2" id="category_new_btn"></i>   </div>
+                    <ul id="categoryTree" class="ztree"></ul>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="right">
+            <form id="dataform" method="post" action="{:U('Page/add')}">
+
+                <input type="hidden" name="picture" id="picture" value=""/>
+                <input type="hidden" value="{$page.id}" id="id" name="id">
+
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        必填项
+                    </a>
+                        <div>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th>影片标题</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="title" id="title" type="text"
+                                                                   value="{$page.title}"></div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                        <tr>
+                            <th>别名</th>
+                            <td class="form">
+                                <div class="input-control text"><input name="alias" id="alias" type="text"
+                                                                       value="{$page.alias}"></div>
+                            </td>
+                            <td class="v"></td>
+                        </tr>
+
+
+                        <tr id="uuid">
+                            <th>播放源：</th>
+                            <td class="form">
+                                <div class="input-control text">
+                                    <foreach name="retuuid" item="vo">
+                                        <span style="border-radius: 3px;background-color:#e5e5e5 ">{$vo.uname} <a href="javascript:void(0)" onclick="btn_delete({$vo.aid},{$vo.type})" ">x</a>&nbsp;</span>&nbsp;&nbsp;
+                                    </foreach>
+                                </div>
+                            </td>
+                            <td class="v"></td>
+                        </tr>
+                        <th>所属分类</th>
+                        <td class="form">
+                            <div class="input-control text"><input id="category_name" name="category_name"
+                                                                   readonly=readonly type="text"
+                                                                   value="{$category.catname}"/></div>
+                            <input id="category_id" name="category_id" value="{$page.cid}" type="hidden"/>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr>
+                        <th>影片简介</th>
+                        <td class="form">
+                            <script id="editor" name="editor" type="text/plain">
+                                {$page.desc|htmlspecialchars_decode}
+                            </script>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                        <tr>
+                            <th>上传图片</th>
+                            <td class="form"><input type="file" name="fileField" id="fileField" accept="image/*"></td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <td id="product_image">
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <th>缩略图</th>
+                            <td class="form">
+                                <if condition="$page.pic neq null">
+                                        <img src="{$page.pic}" id="preview-img"  />
+                                    <else />
+                                    <img src="" id="preview-img" />
+                                </if>
+                            </td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                        </div>
+                    </li>
+                    <li  class="active"><a href="#" class="title">
+                        可选项
+                    </a>
+                        <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <th>影片类型</th>
+                                <td class="form">
+                                    <div class="input-control text">
+                                        <foreach name="type" item="vo" key="">
+                                            <input style="cursor: pointer;border-radius: 4px;width: 15px;height:15px;" name="checkbox" class="checkbox" id="cat_{$key}" value="{$vo}" type="checkbox"  <foreach name="checkArray" item="sub" key="k"><if condition="$vo eq $sub" >checked</if></foreach> />
+                                            <label for="cat_{$key}">{$vo}</label>
+                                        </foreach>
+                                        <input type="hidden" name="cat" id="cat" size="100" value="{$page.cat}" />
+                                    </div>
+                                </td>
+                                <td class="v"></td>
+                            </tr>
+                            <tr>
+                                <th>导演</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="director" id="director" type="text"
+                                                                           value="{$page.director}"></div>
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <th>演员</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="act" id="act" type="text"
+                                                                           value="{$page.act}"></div>
+                                </td>
+                                <td>&nbsp;</td>
+                            </tr>
+
+                            <tr>
+                                <th>地区</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="area" id="area" type="text"
+                                                                           value="{$page.area}"></div>
+                                </td>
+                                <td class="v"></td>
+                            </tr>
+                            <tr>
+                                <th>年份</th>
+                                <td class="form">
+                                    <div class="input-control text"><input name="year" id="year" type="text"
+                                                                           value="{$page.year}"></div>
+                                </td>
+                                <td class="v"></td>
+                            </tr>
+
+
+                         <tr>
+                         <th>发布日期</th>
+                         <td class="form">
+                             <if condition="$page.inputtime neq null">
+                                 <input name="create_date" id="datepicker" type="text" class="dateInput"
+                                        value="{$page.inputtime|date='Y-m-d',###}">
+                                 <else/>
+                                 <input name="create_date" id="datepicker" type="text" class="dateInput"
+                                        value="">
+                             </if>
+
+                         </td>
+                         <td>&nbsp;</td>
+                         </tr>
+                             </table>
+                             </div>
+                         </li>
+
+                                 </ul>
+
+                                 <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                                                                              value="重置"/><input
+                                         type="button" value="取消"/></div>
+                             </form>
+
+
+                         </div>
+                         <!--end.right-->
+    </div>
+</div>
+
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+<div id="dialog-div" style="display:none"></div>
+</body>
+<script type="text/javascript">
+    $(function () {
+
+        categoryTree.init(3);
+        category.init(3);
+        datepicker.new('datepicker');
+        var editor = beditor.new('editor');
+
+        $('#ratio').change(function () {
+            if ($('#preview-img').prop('src') != '')
+                jcorp.renewApi();
+        });
+
+        $('#fileField').live('change', function () {
+            ajaxFileUpload();
+        });
+
+        var validator = $("#dataform").validate({
+            rules: {
+                title: "required",
+                content: {
+                    required: true
+                }
+            },
+            submitHandler: function (form) {
+                editor.sync();
+
+                $(form).ajaxSubmit(function (data) {
+                    var status = data.status;
+                    var info = data.info;
+                    if (status) {
+                        alert("插入成功");
+                        location.href = "__APP__/Admin/Page/";
+                    } else {
+                        alert(data.info);
+                    }
+
+                });
+            },
+            errorPlacement: function (error, element) {
+
+            }
+
+        });
+
+        $('#reset_btn').click(function () {
+            editor.setContent('');
+            validator.resetForm();
+            $('.valid').removeClass('valid');
+            $('.error').removeClass('error');
+            datepicker.new('datepicker');
+        })
+    });
+    //checkbox获取值
+    $('.checkbox').click(function () {
+        var s='';
+        $('input[name="checkbox"]:checked').each(function(){
+            s+=$(this).val()+',';
+        });
+        $('#cat').val(s);
+    });
+
+    function ajaxFileUpload() {
+        $.ajaxFileUpload({
+            url: window.SITE_URL + '/Admin/Upload/ajaxUpload',
+            secureuri: false,
+            fileElementId: 'fileField',
+            dataType: 'json',
+            complete: function (data, status) {
+            },
+            success: function (data, status) {
+                $('#preview-img').show();
+                $('#preview-img').attr('src', window.SITE_URL + '/uploads/thumb_' + data.info[0].savename);
+                $('#picture').val(window.SITE_URL + '/uploads/thumb_' + data.info[0].savename);
+                jcorp.renewApi();
+            },
+            error: function (data, status, e) {
+                alert("上传失败");
+            }
+        })
+        return false;
+    }
+
+      function btn_delete(id,type){
+          if(confirm("确定要删除此播放器么！"))
+          {
+              $.get('__APP__/Admin/Page/delete_player?id='+id+'&type='+type,function(){
+                  location.reload();
+              });
+          }
+          else
+          {
+          }
+    }
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("input:radio[name='type']").change(function() {
+            var val= $('input:radio[name="type"]:checked').val();
+            if(val!=0){
+                $("#uuid").show();}
+            else{
+                $("#uuid").hide();
+            }
+        });
+    });
+</script>
+</html>

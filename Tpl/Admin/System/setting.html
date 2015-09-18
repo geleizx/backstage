@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+        <div id="right">
+            <form enctype="multipart/form-data" action="{:U('System/save_setting')}" method="post" id="dataform">
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th>皮肤</th>
+                        <td class="form">
+                            <label class="input-control radio">
+
+                                <if condition="$config['skin'] == 'blue'">
+                                    <input class="skin" type="radio"  checked name="skin" id="blue" value="blue">
+                                    <else />
+                                    <input class="skin" type="radio"  name="skin" id="blue" value="blue">
+                                </if>
+                                <span class="helper">深海蓝</span>
+                            </label>&nbsp;&nbsp;
+                            <label class="input-control radio">
+
+                                <if condition="$config['skin'] == 'red'">
+                                    <input class="skin" type="radio" checked name="skin" id="red" value="red" >
+                                    <else />
+                                    <input class="skin" type="radio" name="skin" id="red" value="red">
+                                </if>
+
+                                <span class="helper">火山红</span>
+                            </label>&nbsp;&nbsp;
+                            <label class="input-control radio">
+
+                                <if condition="$config['skin'] == 'green'">
+                                    <input class="skin" type="radio" checked name="skin" id="green" value="green" >
+                                    <else />
+                                    <input class="skin" type="radio" name="skin" id="green" value="green">
+                                </if>
+
+                                <span class="helper">清新绿</span>
+                            </label>&nbsp;&nbsp;
+                            <label class="input-control radio">
+
+                                <if condition="$config['skin'] == 'orange'">
+                                    <input class="skin" type="radio" checked name="skin" id="orange" value="orange" >
+                                    <else />
+                                    <input class="skin" type="radio" name="skin" id="orange" value="orange">
+                                </if>
+
+                                <span class="helper">阳光橙</span>
+                            </label>&nbsp;&nbsp;
+                            <label class="input-control radio">
+
+                                <if condition="$config['skin'] == 'purple'">
+                                    <input class="skin" type="radio" checked name="skin" id="purple" value="purple" >
+                                    <else />
+                                    <input class="skin" type="radio" name="skin" id="purple" value="purple">
+                                </if>
+
+                                <span class="helper">罗兰紫</span>
+                            </label>&nbsp;&nbsp;
+                            <label class="input-control radio">
+
+                                <if condition="$config['skin'] == 'coffee'">
+                                    <input class="skin" type="radio" checked name="skin" id="coffee" value="coffee" >
+                                    <else />
+                                    <input class="skin" type="radio" name="skin" id="coffee" value="coffee">
+                                </if>
+
+                                <span class="helper">咖啡褐</span>
+                            </label>&nbsp;&nbsp;
+                            <label class="input-control radio">
+
+                                <if condition="$config['skin'] == 'silver'">
+                                    <input class="skin" type="radio" checked name="skin" id="silver" value="silver" >
+                                    <else />
+                                    <input class="skin" type="radio" name="skin" id="silver" value="silver">
+                                </if>
+
+                                <span class="helper">冰雪银</span>
+                            </label>&nbsp;&nbsp;
+                        </td>
+                        <td class="v" id="v_news_title"></td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <td class="form">&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <!--
+                    所有功能选项类的表单都做成即时生效吧，不需要用户再点提交表单的操作    by Ray
+                    <tr>
+                        <th colspan="3" class="buttons">
+                            <input type="submit" value="确认"/>
+                            <input type="button" id="reset_btn" value="重置"/>
+                        </th>
+                    </tr>-->
+                </table>
+            </form>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+</body>
+
+
+<div id="dialog-div" style="display:none">
+</div>
+
+<script type="text/javascript" >
+
+    $(document).ready(function(){
+        $('.skin').click(function(){
+            var css_id =  $('#skin_id')
+            var css_new = $(this).prop('id');
+            var dir_str =css_id.prop('href');
+            var arr = dir_str.split('/');
+            var tmp = arr[ arr.length - 1  ];
+            var real_css_file = dir_str.replace( tmp , css_new + '.css');
+            css_id.prop('href' , real_css_file) ;
+            $("#dataform").submit();
+        });
+    })
+
+    var validator  =  $("#dataform").validate({
+        rules: {
+        },
+        submitHandler: function (form) {
+            $(form).ajaxSubmit(function (data) {
+                var status = data.status;
+                var info = data.info;
+                if (status) {
+                  //  alert("修改成功！");
+                    location.reload();
+                } else {
+                    alert(data.info);
+                }
+            });
+        },
+        errorPlacement: function (error, element) {
+        }
+    });
+
+
+    $.get("{:U('Index/online')}", function (data) {
+        var info = data.info;
+        $('#visitors').html(info[0].visitors + '次');
+    });
+
+
+</script>
+</html>

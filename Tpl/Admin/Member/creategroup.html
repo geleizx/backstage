@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+    <script type="text/javascript" src="{$js_dir}/role.js"></script>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}  </p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+
+        <div id="right">
+            <form id="dataform" method="post" action="__APP__/Admin/Member/groupAdd">
+                <input type="hidden" name="editId" value="{$groupObj.id}" id="groupId">
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        基本
+                    </a>
+                        <div>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+                    <tr>
+                        <th>会员组名</th>
+                        <td class="form">
+                            <div class="input-control text">
+                                <input name="name" id="name" type="text" value="{$groupObj.name}"></div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+
+                    <tr>
+                        <th>升级点数</th>
+                        <td class="form">
+                            <div class="input-control text">
+                                <input name="point" id="point" type="text" value="{$groupObj.point}"></div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+
+                    <tr>
+                        <th>开启下载</th>
+                        <td class="form">
+                            <label class="input-control switch" onClick="">
+                            <if condition="($groupObj.allowdownload eq 1)">
+                                <input type="checkbox"  name="allowdownload" checked value="1"/>
+                                <else/>
+                                <input type="checkbox"  name="allowdownload" value="1"/>
+                            </if>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr>
+                        <th>开启评论与消息</th>
+                        <td class="form">
+                            <label class="input-control switch" onClick="">
+                            <if condition="($groupObj.allowsendmessage eq 1)">
+                                <input type="checkbox" name="allowsendmessage" checked value="1"/>
+                                <else/>
+                                <input type="checkbox" name="allowsendmessage" value="1"/>
+                            </if>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr>
+                        <th>启用</th>
+                        <td class="form">
+                            <label class="input-control switch" onClick="">
+                            <if condition="($groupObj.disabled eq 1)">
+                                <input type="checkbox" name="disabled" checked value="1"/>
+                                <else/>
+                                <input type="checkbox" name="disabled" value="1"/>
+                            </if>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <td class="v"></td>
+                    </tr>
+
+
+                    <tr>
+                        <th>排序</th>
+                        <td class="form">
+                            <div class="input-control text">
+                                <input name="sort" id="sort" type="text" value="{$groupObj.sort}">
+                            </div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                    <tr>
+                        <th>描述</th>
+                        <td class="form">
+                            <div class="input-control text">
+                                <input name="description" id="description" type="text"
+                                       value="{$groupObj.description}"></div>
+                        </td>
+                        <td class="v"></td>
+                    </tr>
+                </table>
+                        </div>
+                    </li>
+
+                    <li><a href="#" class="title">
+                        分类权限设置
+                    </a>
+                    <div>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <td class="form">
+                                    <div class="buttons"><input type="button" id="category_role_add" value="添加"/></div>
+                                </td>
+                            </tr>
+                            <tr id="categoryRoleTr" style="display: <if condition="($cat eq 0)"> none</if>">
+                                <th>已选定分类权限</th>
+                                <td class="form" id="categoryRoleTd">
+                                    <volist name='roleObj[0]' id='catRole'>
+                                        <label class="input-control" name="old" id="cat_lab_{$catRole.role_id}">
+                                        <input class="skin" type="hidden" name="oldrole[0][]" value="{$catRole.role_id}">
+                                        <span class="helper">{$catRole.role_name}</span>
+                                        <a href="javascript:void(0)" class="del" onclick="delRole('cat_lab_{$catRole.role_id}')">x</a>
+                                        </label>
+                                    </volist>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    </li>
+                    <li><a href="#" class="title">
+                        产品权限设置
+                    </a>
+                    <div>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <td class="form">
+                                    <div class="buttons"><input type="button" id="product_role_add" value="添加"/></div>
+                                </td>
+                            </tr>
+                            <tr id="productRoleTr" style="display: <if condition="($product eq 0)"> none</if>">
+                                <th>已选定产品权限</th>
+                                <td class="form" id="productRoleTd">
+                                    <volist name='roleObj[1]' id='productRole'>
+                                        <label class="input-control" name="old" id="product_lab_{$productRole.role_id}">
+                                            <input class="skin" type="hidden" name="oldrole[1][]" value="{$productRole.role_id}">
+                                            <span class="helper">{$productRole.role_name}</span>
+                                            <a href="javascript:void(0)" class="del" onclick="delRole('product_lab_{$productRole.role_id}')">x</a>
+                                        </label>
+                                    </volist>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    </li>
+                    <li><a href="#" class="title">
+                        页面权限设置
+                    </a>
+                    <div>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <td class="form">
+                                    <div class="buttons"><input type="button" id="page_role_add" value="添加"/></div>
+                                </td>
+                            </tr>
+                            <tr id="pageRoleTr" style="display: <if condition="($page eq 0)"> none</if>">
+                                <th>已选定页面权限</th>
+                                <td class="form" id="pageRoleTd">
+                                    <volist name='roleObj[2]' id='pageRole'>
+                                        <label class="input-control" name="old" id="page_lab_{$pageRole.role_id}">
+                                            <input class="skin" type="hidden" name="oldrole[2][]" value="{$pageRole.role_id}">
+                                            <span class="helper">{$pageRole.role_name}</span>
+                                            <a href="javascript:void(0)" class="del" onclick="delRole('page_lab_{$pageRole.role_id}')">x</a>
+                                        </label>
+                                    </volist>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    </li>
+                    <li><a href="#" class="title">
+                        文章权限设置
+                    </a>
+                    <div>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <td class="form">
+                                    <div class="buttons"><input type="button" id="news_role_add" value="添加"/></div>
+                                </td>
+                            </tr>
+                            <tr id="newsRoleTr" style="display:<if condition="($news eq 0)"> none</if>">
+                                <th>已选定文章权限</th>
+                                <td class="form" id="newsRoleTd">
+                                    <volist name='roleObj[3]' id='newsRole'>
+                                        <label class="input-control" name="old" id="news_lab_{$newsRole.role_id}">
+                                            <input class="skin" type="hidden" name="oldrole[3][]" value="{$newsRole.role_id}">
+                                            <span class="helper">{$newsRole.role_name}</span>
+                                            <a href="javascript:void(0)" class="del" onclick="delRole('news_lab_{$newsRole.role_id}')">x</a>
+                                        </label>
+                                    </volist>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    </li>
+                </ul>
+
+                <div class="buttons">
+                    <input type="submit" value="确认"/>
+                    <input type="reset" value="重置"/>
+                </div>
+            </form>
+
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+<div id="dialog-div" style="display:none"></div>
+</body>
+<script type="text/javascript">
+
+    categoryRole.init();
+    productRole.init();
+    pageRole.init();
+    newsRole.init();
+
+
+    $(function () {
+        var validator = $("#dataform").validate({
+            rules: {
+                name: "required",
+                point: {
+                    required: true,
+                    number: true
+                }
+            },
+            submitHandler: function (form) {
+
+                $(form).ajaxSubmit(function (data) {
+                    var status = data.status;
+                    var info = data.info;
+                    if (status) {
+                        alert("插入成功");
+                        location.href = "__APP__/Admin/Member/group";
+                    } else {
+                        alert(data.info);
+                    }
+                });
+            },
+            errorPlacement: function (error, element) {
+
+            }
+
+        });
+        $('#reset_btn').click(function () {
+            validator.resetForm();
+            $('.valid').removeClass('valid');
+            $('.error').removeClass('error');
+            datepicker.new('datepicker');
+        })
+    });
+
+
+
+
+
+</script>
+</html>

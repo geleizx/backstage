@@ -1,0 +1,337 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <input type="hidden" id="category_id" value="{$categoryId}"/>
+
+    <div id="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td>
+                    <!--<button id="newDialog"><i class="icon-plus-2"></i> 快建</button>-->
+                    <button id="btn_delete"><i class="iccancelon-"></i> 删除</button>
+                    <!--<button id="outputDialog"><i class="icon-redo"></i> 导出</button>
+                    <button><i class="icon-undo"></i> 导入</button>
+                    <button><i class="icon-list"></i> 开启拖拽排序</button>-->
+                </td>
+                <td>
+                    <div class="input-control text">
+                        <input type="text" name="keyword"/>
+                        <button class="btn-search" style="margin-left:-29px;"></button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div id="classlist">
+            <h3>
+              新闻摘要
+            </h3>
+            <div>
+                <div class="productPreview">
+                    <p style="text-align:center;">{$newsContent.title}</p>
+                    <p style="text-indent:2em;">{$newsContent.newsdata.content|htmlspecialchars_decode|strip_tags|msubstr=0,100,'utf-8',true}</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="right">
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="datalist">
+
+                <thead>
+                <tr>
+                    <th class="checkbox"><input type="checkbox" name="" id="check_all"></th>
+                    <th>评论内容</th>
+                    <th>用户名</th>
+                    <th>E-mail</th>
+                    <th>电话</th>
+                    <th class="date headerSortUp">发布日期</th>
+                    <th class="hits">回复</th>
+                    <th class="public">状态</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <foreach name="messageList" item="messageList">
+                    <tr>
+                        <td class="checkbox"><input type="checkbox" name="product_checkbox" id="comment_{$messageList.mainID}"></td>
+
+                        <td>{$messageList.comment.content}</td>
+                        <td>{$messageList.vistor}</td>
+                        <td>{$messageList.email}</td>
+                        <td>{$messageList.mobilephone}</td>
+                        <td class="date headerSortUp">{$messageList.date|date="Y-m-d",###}</td>
+
+                        <if condition="$messageList['respond'] == NULL" >
+                        <td ><a href="javascript:void(0)" class="reply" id="comment_{$messageList.mainID}">未回复</a></td><!--messageboard的主键是 mainID-->
+                        <else />
+                        <td>已回复</td><!--messageboard的主键是 mainID-->
+                        </if>
+
+                        <if condition="$messageList.verify == 1">
+                        <td>已审核</td>
+                        <else />
+                        <td ><a href="javascript:void(0)" class="verify" id="comment_{$messageList.mainID}" class="public">待审核</a></td><!--这里是验证？-->
+                        </if>
+                    </tr>
+                </foreach>
+
+
+                
+
+
+                </tbody>
+            </table>
+            <div class="pagination">
+                {$page}
+            </div>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+</body>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        categorySelectTree.init();
+        categoryTree.init(2);
+        $('#outputDialog').click(function (e) {
+            $.Dialog({
+                'title': '导出',
+                'draggable': true,
+                'content': '<form action="" id="newform" class="dialogform" method="post"><span class="item">导出方式：</span><label onclick="" class="input-control radio"><input type="radio" value="currentClass"  name="output"  checked=""><span class="helper">仅当前类别数据</span></label><label  onclick="" class="input-control radio"><input type="radio" name="output" value="allClass"><span class="helper">全部数据</span></label></form>',
+                'buttons': {
+                    '确定': {
+                        'action': function () {
+
+                        }
+                    },
+                    '取消': {
+                        'action': function () {
+                        }
+                    }
+                }
+            });
+        });
+
+        $('.pic').each(function () {
+
+            var id = $(this).prop('id').split('-')[1];
+            var picId = 'pic-' + id;
+            $('#' + picId).mouseover(function () {
+                $('#pic' + id).show();
+            })
+            $('#' + picId).mouseout(function () {
+                $('#pic' + id).hide();
+            })
+        });
+
+        $('.del').click(function () {
+            var ids = new Array();
+            var id = $(this).attr('id').split('_')[1];
+            ids.push(id);
+            // dialog开始
+            $.Dialog({
+                'title'      : '{:C('DELETE_MESSAGE_TITLE')}',
+                'draggable'  : true,
+                'content'    : '{:C('DELETE_MESSAGE_DELONE')}',
+                'buttons'    : {
+                    '{:C('DELETE_MESSAGE_SUBMIT')}'    : {
+                        'action': function(){
+
+                             //单条删除开始
+                            $.post('__APP__/Admin/Product/deleteProducts', {'productIds': ids}, function (data) {
+                                var status = data.status;
+                                var info = data.info;
+
+                                if (status) {
+                                    location.reload();
+                                } else {
+                                    alert(info);
+                                }
+                            });
+                            //单条删除结束
+
+                        }
+                    },
+                    '{:C('DELETE_MESSAGE_CANCEL')}'     : {
+                        'action': function(){}
+                    }
+                }
+            });
+            // dialog 结束
+        })
+
+        //删除按钮
+        $('#btn_delete').click(function () {
+            var ids = new Array();
+            $("input[name='product_checkbox']:checked").each(function () {
+                var id = $(this).attr('id').split('_')[1];
+                ids.push(id);
+            });
+
+            // dialog开始
+            $.Dialog({
+                'title'      : '{:C('DELETE_MESSAGE_TITLE')}',
+                'draggable'  : true,
+                'content'    : '{:C('DELETE_MESSAGE_DELSOME')}', 
+                'buttons'    : {
+                    '{:C('DELETE_MESSAGE_SUBMIT')}'    : {
+                        'action': function(){
+
+                            //批量删除操作开始
+                            $.post('__APP__/Admin/Product/deleteProducts', {'productIds': ids}, function (data) {
+                                var status = data.status;
+                                var info = data.info;
+
+                                if (status) {
+                                    location.reload();
+                                } else {
+                                    alert(info);
+                                }
+                            });
+                            //批量删除操作结束
+
+                        }
+                    },
+                    '{:C('DELETE_MESSAGE_CANCEL')}'     : {
+                        'action': function(){}
+                    }
+                }
+            });
+            // dialog 结束
+        });
+        $('#check_all').click(
+                function () {
+                    $("input[name='product_checkbox']").prop('checked',
+                            $(this).prop("checked"));
+                })
+
+
+        $('#newDialog').click(function (e) {
+            var editor = "\<script  id\=\"editor\" type\=\"text/plain\">\<\/script\>";
+            $.Dialog({
+                'title': '快速新建',
+                'draggable': true,
+                'content': '<form action="" id="newform" class="dialogform" method="post">' +
+                        '<span class="item">标题：</span><label class="input-control text"><input name="title" id="title" type="text" class="vok"></label>' +
+                        '<span class="item">分类：</span>' +
+                        '<label class="input-control select"> <input type="text" name="category" id="category" /> </label>' +
+                        '<div class="input-control textarea"> ' + editor + ' </div></form>',
+
+                'buttons': {
+                    '确定': {
+                        'action': function () {
+                            editor.destroy();
+                         }
+                    },
+                    '取消': {
+                        'action': function () {
+                            editor.destroy();
+                        }
+                    }
+                }
+
+
+            });
+
+            editor = beditor.new("editor");
+            $("#category").mcDropdown("#categorymenu");
+        });
+        $('#datalist').tablesorter({
+            headers: { 0: { sorter: false},1: { sorter: false}}
+        });
+    });
+
+    //导出按钮
+    $('#outputDialog').click(function (e) {
+        $.Dialog({
+            'title': '导出',
+            'draggable': true,
+            'content': '<form action="" id="newform" class="dialogform" method="post"><span class="item">导出方式：</span><label onclick="" class="input-control radio"><input type="radio" value="currentClass"  name="output"  checked=""><span class="helper">仅当前类别数据</span></label><label  onclick="" class="input-control radio"><input type="radio" name="output" value="allClass"><span class="helper">全部数据</span></label></form>',
+            'buttons': {
+                '确定': {
+                    'action': function () {
+                    }
+                },
+                '取消': {
+                    'action': function () {
+                    }
+                }
+            }
+        });
+    });
+
+
+    //回复
+        $('.reply').click(function (e) {
+
+            var id = $(this).prop('id');
+            id = id.split('_')[1];
+
+            $.Dialog({
+                'title': '回复',
+                'draggable': true,
+                'content':' <form action="__APP__/Admin/Message/addRespondAct" id="newform" class="dialogform" method="post">' +
+                        '<input type="hidden" name="id" value=" '+ id + '">'+
+                        '<div class="input-control text" ><span class="item">回复内容</span></div> <br/>' +
+                        '<div class="input-control textarea" >  <textarea id="content" name="content" style="width: 450px ; height: 300px;"></textarea> </div></form>',
+                'buttons': {
+                    '确定': {
+                        'action': function () {
+//                            $('#newform').submit(function(){
+                                $('#newform').ajaxSubmit(function (data) {
+                                    var status = data.status;
+                                    if (status){
+                                        alert("回复成功");
+                                        location.href="{:U('Product/index')}";
+                                    }else{
+                                        alert(data.info);
+                                    }
+                                });
+//                            });
+
+                        }
+                    },
+                    '取消': {
+                        'action': function () {
+                        }
+                    }
+                }
+            });
+        });
+
+        //审核
+        $('.verify').click(function(){
+            var id = $(this).prop('id').split('_')[1];
+            var node = $(this);
+            $.post('__APP__/Admin/Message/verifyMessageAct', {'id': id}, function (data) {
+                var status = data.status;
+
+                if (status) {
+                    if (1){
+                        node.text('已审核');
+                    }else{
+                        node.text('未审核');
+                    }
+                } else {
+                    node.text('已审核');
+                }
+            });
+        });
+
+</script>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body id="login" class="metrouicss">
+<form action="__APP__/Admin/User/userLogin" method="post" name="loginform" id="loginform">
+
+    <h2 style="color: #fff">后台登录</h2><br>
+
+    <!--用户名-->
+    <div id="loginSwtich">
+        <if condition="$userInfo['username']">
+            <input type="hidden" name="username" id="username" value="{$userInfo.username}" class="formText" />
+            <span id="loginid">{$userInfo.username}</span>
+            <span><a href="javascript:void(0)" id="changeid" value="{$userInfo.username}">这不是我的账号</a></span>
+        <else />
+            <span id="loginpw"><input type="text" name="username" id="username" class="formText" /></span>
+        </if>
+    </div>
+
+    <!--密码-->
+    <div>
+        <span id="loginpw"><input type="password" name="password" id="password" class="formText" /></span>
+        <span id="loginbtn">
+            <input type="image" src="{$images_dir}/btn_login.png">
+        </span>
+    </div>
+
+    <!--自动登录开关-->
+    <div>
+        <label class="input-control switch" onClick="">
+            <input type="checkbox" id="rember_me" name="rember_me" />
+            <span class="helper">下次自动登录</span>
+        </label>
+    </div>
+</form>
+
+<!--页脚-->
+<div id="loginfooter">
+
+</div>
+
+</body>
+
+<script type="text/javascript">
+$(function(){
+    $("#loginform").validate({
+        rules: {
+            username: "required",
+            password: "required"
+        },
+
+        event: "blur",
+
+        success : function(str,data){
+//            id = 'v_' + data.id;
+//            ($('#' + id)).html('<span class="v_ok"> </span>');
+
+        },
+
+        submitHandler: function (form) {
+
+            $('#loginform').ajaxSubmit(function (data) {
+
+                var status = data.status;
+                var info = data.info;
+
+                if (status){
+                    if (info.refer){
+                        location.href=info.refer;
+                    }else{
+                        location.href="__APP__/Admin/";
+                    }
+                }else{
+                    alert(data.info);
+                }
+
+            });
+        },
+        errorPlacement: function (error, element) {
+            id = 'v_' + element.attr('id');
+            ($('#' + id)).html(error);
+        }
+
+    });
+
+
+    $('#username').keyup(function(){
+        var username = $(this).val();
+        $.get('{:U("User/getUserInfo")}',{"username" :username},function(data){
+
+            var user = data.info;
+
+            if (user != null){
+                $('#user_picture').prop('src','__APP__' + user.avatar);
+            }else{
+                $('#user_picture').prop('src','__PUBLIC__/images/noimg.jpg');
+            }
+        });
+    });
+
+    $('#changeid').on('click',function(){
+        $('#loginSwtich').html('<span id="loginpw"><input type="text" name="username" id="username" class="formText" /></span>');
+    });
+});
+
+</script>
+</html>

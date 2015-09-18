@@ -1,0 +1,38 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="datalist">
+    <thead>
+    <tr>
+        <th class="checkbox"><input type="checkbox" name="checkbox" id="check_all"></th>
+        <th>标题</th>
+        <th>位置说明</th>
+        <th>类型</th>
+        <th>尺寸</th>
+        <th>状态</th>
+        <th class="date headerSortUp">投放日期</th>
+        <th class="date">到期时间</th>
+        <th class="hits">点击量</th>
+        <th>广告维护</th>
+    </tr>
+    </thead>
+    <tbody>
+    <foreach name="adList" item="adList">
+        <tr>
+
+            <td class="checkbox"><input type="checkbox" name="ad_checkbox"
+                                        id="ad_{$adList.id}"></td>
+            <td><a href="#">{$adList.title}</a><a href="#" class="del">&times;</a></td>
+            <td>{$adList.postion}</td>
+            <td>
+                {$adList.type}
+            </td>
+            <td>{$adList.width} x {$adList.height}</td>
+            <td class="state">
+                <if condition="$adList['status'] == 1">
+                    <span class="run">运行</span>
+                    <else/>
+                    <span class="stop">停止</span>
+                </if>
+            </td>
+            <td class="date">{$adList.startdate|date="Y-m-d",###}</td>
+            <if condition = '($adList.infinite eq 1)' >
+                <td class="date">无限</td>
+      

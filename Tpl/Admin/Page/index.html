@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<include file="Tpl/Admin/default/header.inc.html"/>
+        </head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+<include file="Tpl/Admin/default/nav.inc.html"/>
+<input type="hidden" id="category_id" value="{$categoryId}" />
+<div id="main-container">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0"
+           id="toolbar">
+        <thead>
+        <tr>
+            <td>
+                <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+            </td>
+            <td>
+                <button id="btn_new">
+                    <i class="icon-plus-2"></i> 新建
+                </button>
+                <button id="btn_delete"><i class="icon-cancel"></i> 删除</button>
+            </td>
+            <td>
+                电影：{$tv.0}部&nbsp;&nbsp;电视剧：{$tv.1}部&nbsp;&nbsp;综艺：{$tv.2}部&nbsp;&nbsp;动漫：{$tv.3}部&nbsp;&nbsp;少儿：{$tv.4}部&nbsp;&nbsp;纪录片：{$tv.5}部
+            </td>
+            <td>
+                <div class="input-control text">
+                    <input type="text" id="keyword" name="keyword"/>
+                    <button class="btn-search" id="btn-search" style="margin-left: -29px;"></button>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="classlist">
+        <h3>
+           快搜分类
+        </h3>
+        <div>
+            <div class="left">
+                <div id="category_new"> <i class="icon-plus-2" id="category_new_btn"></i>   </div>
+                <ul id="categoryTree" class="ztree"></ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="right">
+
+        <include file="Tpl/Admin/default/Page/page-table.inc.html"/>
+        <!--end.right-->
+    </div>
+    <div class="pagination" id="pagination">
+    {$page}
+    </div>
+</div>
+<!--end.main-->
+
+
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+<script type="text/javascript">
+    $(function () {
+        categorySelectTree.init(3);
+        categoryTree.init(3);
+
+        $('#datalist').tablesorter({
+            headers: { 0: { sorter: false}}
+        });
+
+        $("#btn-search").live("click",function(){
+                    var keyword = $("#keyword").val();
+                    if(keyword == "" || keyword == null){
+//                        alert("关键字为空");
+                        return ;
+                    }
+
+                    if(keyword.toUpperCase() == 'ALL'){
+                        keyword = "";
+                    }
+
+//                    alert(keyword);
+                    $.post('__APP__/Admin/Page/ajaxSearchPage', {'keyword': keyword }, function (data) {
+                        $("#right").html(data.info.pageTabelHtml);
+                        $("#pagination").html(data.info.pagination);
+//                            alert(data);
+                    });
+                });
+
+        //小X
+        $('.del').click(function () {
+            var ids = new Array();
+            var id = $(this).attr('id').split('_')[2];
+            ids.push(id);
+            $.Dialog({
+                'title'      : '{:C('DELETE_MESSAGE_TITLE')}',
+                'draggable'  : true,
+                'content'    : '{:C('DELETE_MESSAGE_DELSOME')}',
+                'buttons'    : {
+                    '{:C('DELETE_MESSAGE_SUBMIT')}'    : {
+                        'action': function(){
+
+                             //删除开始
+                            $.post('__APP__/Admin/Page/deletePage', {'PageIds': ids}, function (data) {
+                                var status = data.status;
+                                var info = data.info;
+
+                                if (status) {
+                                    location.reload();
+                                } else {
+                                    alert(info);
+                                }
+                            });
+                            //删除结束
+                        }
+                    },
+                    '{:C('DELETE_MESSAGE_CANCEL')}'     : {
+                        'action': function(){}
+                    }
+                }
+            });
+
+
+        });
+
+        //删除按钮
+        $('#btn_delete').click(function () {
+            $.Dialog({
+                'title'      : '{:C('DELETE_MESSAGE_TITLE')}',
+                'draggable'  : true,
+                'content'    : '{:C('DELETE_MESSAGE_DELSOME')}',
+                'buttons'    : {
+                    '{:C('DELETE_MESSAGE_SUBMIT')}'    : {
+                        'action': function(){
+
+                            //删除操作
+                            var ids = new Array();
+                            $("input[name='Page_checkbox']:checked").each(function () {
+                                var id = $(this).attr('id').split('_')[1];
+                                ids.push(id);
+                            });
+
+
+                            $.post('__APP__/Admin/Page/deletePage', {'PageIds': ids}, function (data) {
+                                var status = data.status;
+                                var info = data.info;
+                                if (status) {
+                                    location.reload();
+                                } else {
+                                    alert(info);
+                                }
+                            });
+                            //删除操作结束
+                        }
+                    },
+                    '{:C('DELETE_MESSAGE_CANCEL')}'     : {
+                        'action': function(){}
+                    }
+                }
+            });
+
+        });
+
+        //checkall
+        $('#check_all').click(
+                function () {
+                    $("input[name='page_checkbox']").prop('checked',
+                            $(this).prop("checked"));
+         });
+
+
+        $('#btn_new').click(function (e) {
+            document.location = '__APP__/Admin/Page/create'
+        });
+
+
+        //操作
+        $('.verify').click(function(){
+            var  str =  $(this).attr("id");
+            var splitstr = str.split('_');
+            var id =  splitstr[1];
+            var node = $(this);
+            $.post("__APP__/Admin/Page/verifyPageAct",{id:id},function(data){
+                var status = data.status;
+
+                if (status) {
+                    if (data.info == 0){
+                        node.html("<span class='stop'>已下架</span>");
+                    }else{
+                        node.html("<span class='run'>已开启</span>");
+                    }
+                } else {
+                    alert(data.info);
+                }
+            });
+
+        });
+    });
+</script>

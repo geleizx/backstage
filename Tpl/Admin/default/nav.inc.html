@@ -1,0 +1,45 @@
+<div id="top-nav" class="nav-bar bg-color-dark">
+                        <div class="nav-bar-inner">
+
+                            <ul class="menu">
+                                <li><a href="__APP__/Admin">桌面</a></li>
+                                <foreach name="nav" item="vo">
+                                 <if condition="$vo['isdropmenu'] == 1" >
+                                 <li data-role="dropdown">
+                                    <a>{$vo.name}</a>
+                                    <ul class="dropdown-menu">
+                                        <volist name="vo.childs" id="child">
+                                            <li><a href="__APP__/Admin/{$child.url}" class="check">{$child.name}</a></li>
+                                        </volist>
+                                   </ul>
+                                </li>
+                                <else />
+                                    <li><a href="__APP__/Admin/{$vo.M_url}" class="check" >{$vo.name}</a></li>
+                                </if>
+                               </foreach>
+                               
+                                </ul>
+                        </div>
+                    </div>
+
+<script>
+    $('.check').click(function(){
+        var url = $(this).attr("href");
+        $.ajax({
+            type: "POST",
+            url: "__APP__/AdminBase/checkRight",
+            data: {'url':url},
+            dataType : "JSON",
+            success: function(jsonResult){
+                var status = jsonResult.status;
+                if(status==1){
+                   window.location.href = url ;
+                }else{
+                    alert('无权限访问');
+                    return false;
+                }
+            }
+        });
+        return false;
+    })
+</script>

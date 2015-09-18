@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+        <div id="right">
+            <form enctype="multipart/form-data" action="{:U('System/adminSettingAct')}" method="post" id="dataform">
+            <ul class="accordion" data-role="accordion">
+            <li class="active"><a href="#" class="title">
+                初始化设置
+            </a>
+            <div>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <tr>
+                        <th>客户名称</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="custom" id="custom" type="text"
+                                                                   value="{$settingList.custom}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>负责人</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="customcontacter" id="customcontacter" type="text"
+                                                                   value="{$settingList.customcontacter}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>联系电话</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="customphone" id="customphone" type="text"
+                                                                   value="{$settingList.customphone}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>商务代表</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="agent" id="agent" type="text"
+                                                                   value="{$settingList.agent}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>商务代表电话</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="agentphone" id="agentphone" type="text"
+                                                                   value="{$settingList.agentphone}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>域名</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="domain" id="domain" type="text"
+                                                                   value="{$settingList.domain}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>空间容量</th>
+                        <td class="form">
+                            <div class="input-control text" style="float:left;width:100px;">
+                            <input name="spaceSizeValue" id="title" type="text" value="{$settingList.spacesize_value}"></div>
+                            <div class="input-control select" style="float:left;width:50px;">
+                                <select id="adTypeId" name="spaceSizeType">
+                                <if condition="$settingList['spacesize_type'] == 'MB'">
+                                    <option value="MB" selected="selected" >M</option>
+                                    <option value="GB" >G</option>
+                                <else />
+                                    <option value="MB">M</option>
+                                    <option value="GB" selected="selected" >G</option>
+                                </if>
+                                    
+                                </select>
+                            </div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>服务期限</th>
+                        <td class="form">
+                            <div class="input-control text" style="float:left;width:100px;"><input name="motion_value" id="title" type="text" value="{$settingList.motion_value}"></div>
+                            <div class="input-control select" style="float:left;width:50px;">
+                                <select id="adTypeId" name="motion_type">
+                                    <if condition="$settingList['motion_type'] == 'yyyy'">
+                                    <option value="yyyy" selected="selected">年</option>
+                                    <option value="m">月</option>
+                                    <else />
+                                    <option value="yyyy">年</option>
+                                    <option value="m" selected="selected">月</option>
+                                    </if>
+                                </select>
+                            </div>
+
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>可信网站</th>
+                        <td class="form">
+                            <label class="input-control switch" onClick="">
+                                <if condition="$settingList == 1">
+                                    <input name="trustservice" type="checkbox" checked="checked"/>
+                                    <span class="helper">On</span>
+                                <else />
+                                    <input name="trustservice" type="checkbox"/>
+                                    <span class="helper">Off</span>
+                                </if>
+                        </td><td class="v" ></td>
+                    </tr>
+                <tr>
+                    <th>语言版本</th>
+                    <td class="form">
+                        <volist name="langList" id="lang"  >
+                        <label class="input-control checkbox">
+                            <input type="checkbox" class="lang_list" checked name="lang_list[]" value='{$key}' >
+                            <span class="helper">{$lang}</span>
+                        </label>
+                        </volist>
+                        <!--
+                        <label class="input-control checkbox">
+                            <input type="checkbox" name="lang_list[]">
+                            <span class="helper">英文</span>
+                        </label>
+                        <label class="input-control checkbox">
+                            <input type="checkbox" name="lang_list[]">
+                            <span class="helper">日文</span>
+                        </label>
+                        <label class="input-control checkbox">
+                            <input type="checkbox" name="lang_list[]">
+                            <span class="helper">韩文</span>
+                        </label>
+                        <label class="input-control checkbox">
+                            <input type="checkbox" name="lang_list[]">
+                            <span class="helper">俄文</span>
+                        </label>
+                        -->
+                    </td><td class="v" ></td>
+                </tr>
+                <tr>
+                    <th>主语言</th>
+                    <td class="form">
+
+                        <volist name="langList" id="lang"  >
+                            <label class="input-control radio" id="{$key}_title">
+                                <input type="radio" id='{$key}' name="def_lang" checked value='{$key}'>
+                                <span class="helper">{$lang}</span>
+                            </label>
+                        </volist>
+                        <!--
+                        <label class="input-control radio">
+                            <input type="radio" name="def_lang" checked>
+                            <span class="helper">中文</span>
+                        </label>
+                        <label class="input-control radio" style="display:none">
+                            <input type="radio" name="def_lang">
+                            <span class="helper">英文</span>
+                        </label>
+                        <label class="input-control radio" style="display:none">
+                            <input type="radio" name="def_lang">
+                            <span class="helper">日文</span>
+                        </label>
+                        <label class="input-control radio" style="display:none">
+                            <input type="radio" name="def_lang">
+                            <span class="helper">韩文</span>
+                        </label>
+                        <label class="input-control radio" style="display:none">
+                            <input type="radio" name="def_lang">
+                            <span class="helper">俄文</span>
+                        </label>
+                        -->
+                    </td><td class="v" ></td>
+                </tr>
+                    <tr>
+                        <th>发布日期</th>
+                        <td class="form">
+                            <if condition="$settingList['motionstart'] != NULL">
+                                <input name="motionstart" id="datepicker" type="text" class="dateInput"
+                                       value="{$settingList.motionstart|date='Y-m-d',###}">
+                                <else/>
+                                <input name="motionstart" id="datepicker" type="text" class="dateInput"
+                                       value="">
+                            </if>
+
+                        </td><td class="v" ></td>
+                    </tr>
+            </table>
+            </div>
+            </li>
+            <li><a href="#" class="title">
+                模块设置
+            </a>
+                <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                    <!--<tr>-->
+
+                    <volist name="navList" id="vo"  >
+
+                        <if condition="$i%4 eq 1 ">
+                            <tr>
+                        </if>
+                            <th>{$vo.name}</th>
+                            <td class="form">
+
+                                <label class="input-control switch" name="description" onClick="">
+                            <if condition="$vo.disabled eq 0">
+                                <input class="navDisabled" name="" type="checkbox" checked="checked" value="{$vo.id}" />
+                                <span class="helper">On</span>
+                                <else />
+                                <input class="navDisabled" name="" type="checkbox" value="{$vo.id}" />
+                                <span class="helper">Off</span>
+                            </if>
+                                <!--<label class="input-control switch" name="description" onClick="">-->
+                                <!--<input type="checkbox" checked="" name="navSetting" value="{$vo.id}"/>-->
+                                <!--<span class="helper">&nbsp;</span>-->
+                            </label>
+                            </td>
+
+
+                        <if condition="$i%4 eq 0 ">
+                            </tr>
+                        </if>
+
+                        </volist>
+
+                    <!--</tr>-->
+
+                  <!--  <tr>
+                        <th>邮件营销</th>
+                        <td class="form"><label class="input-control switch" name="description" onClick="">
+                            <input type="checkbox" checked=""/>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <th>广告</th>
+                        <td class="form"><label class="input-control switch" name="param" onClick="">
+                            <input type="checkbox" checked=""/>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <th>留言反馈</th>
+                        <td class="form"><label class="input-control switch" name="attachment" onClick="">
+                            <input type="checkbox" checked=""/>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                        <th>智能地图</th>
+                        <td class="form"><label class="input-control switch" name="keywords" onClick="">
+                            <input type="checkbox" checked=""/>
+                            <span class="helper">&nbsp;</span>
+                        </label></td>
+                    </tr>-->
+                </table>
+                </div>
+            </li>
+            <li><a href="#" class="title">
+                统计服务设置
+            </a>
+                <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+                    <tr>
+                        <th>Site Id</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="siteid" id="siteid" type="text"
+                                                                   value="{$settingList.siteid}"></div>
+                        </td></td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>Key</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="key" id="key" type="text"
+                                                                   value="{$settingList.key}"></div>
+                        </td></td><td class="v" ></td>
+                    </tr>
+                </table>
+                </div>
+            </li>
+            <li><a href="#" class="title">
+                邮件营销设置
+            </a>
+                <div> <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+
+                    <tr>
+                        <th>POP3服务器</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="pop3" id="pop3" type="text"
+                                                                   value="{$settingList.pop3}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>SMTP服务器</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="smtp" id="smtp" type="text"
+                                                                   value="{$settingList.smtp}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>账号</th>
+                        <td class="form">
+                            <div class="input-control text"><input name="mailuser" id="mailuser" type="text"
+                                                                   value="{$settingList.mailuser}"></div>
+                        </td><td class="v" ></td>
+                    </tr>
+                    <tr>
+                        <th>密码</th>
+                        <td class="form">
+                            <div class="input-control text">
+                                <input name="mailpassword" id="mailpassword" type="text" value="{$settingList.mailpassword}">
+                            </div>
+                        </td><td class="v" ></td>
+                    </tr> </table>
+                </div>
+            </li>
+            </ul>
+            <div class="buttons">
+                <input type="submit" value="确认">
+                <input type="reset" value="重置">
+            </div>
+            </form>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+</body>
+
+
+<div id="dialog-div" style="display:none">
+</div>
+
+<script type="text/javascript" >
+
+    $(document).ready(function(){
+        $('.skin').click(function(){
+            var css_id =  $('#skin_id')
+            var css_new = $(this).prop('id');
+            var dir_str =css_id.prop('href');
+            var arr = dir_str.split('/');
+            var tmp = arr[ arr.length - 1  ];
+            var real_css_file = dir_str.replace( tmp , css_new + '.css');
+            css_id.prop('href' , real_css_file) ;
+            $("#dataform").submit();
+        });
+    })
+
+    $('.navDisabled').live("change", function() {
+        var navId = $(this).val();
+//        var checkedVal = ;
+        var navDisabled = ($(this).attr('checked') == undefined)?1:0;
+//        alert($(this).val());
+//        alert($(this).attr('checked'));
+//        alert(navId + " " + navDisabled);
+
+        $.post("{:U('System/setNavDisabled')}",
+                {'navId': navId ,'navDisabled':navDisabled},
+                function (data) {
+//                    alert(data);
+                }
+        );
+
+    });
+
+    var validator  =  $("#dataform").validate({
+        rules: {
+        },
+        submitHandler: function (form) {
+            $(form).ajaxSubmit(function (data) {
+                var status = data.status;
+                var info = data.info;
+                if (status) {
+                    alert("修改成功！");
+                    location.reload();
+                } else {
+                    alert("设置未改变！");
+                }
+            });
+        },
+        errorPlacement: function (error, element) {
+        }
+    });
+
+    $('.lang_list').live('change',function(){
+        id = $(this).val();
+
+        if(this.checked){
+            $("#"+id+"_title").show();
+        }else{
+            $("#"+id+"_title").hide();
+            $("#"+id).removeAttr('checked');
+        }
+    });
+
+
+
+
+
+</script>
+</html>

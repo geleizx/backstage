@@ -1,0 +1,54 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+       id="datalist" class="tablesorter">
+    <thead>
+    <tr>
+        <th class="checkbox"><input type="checkbox" id="check_all"></th>
+
+        <th>账号</th>
+        <th class="hits">用户ID</th>
+        <th class="hits">姓名</th>
+
+        <th>绑定手机号</th>
+        <th>所属会员组</th>
+        <th>默认收货人</th>
+        <th>默认收货手机</th>
+        <th>默认收货地址</th>
+        <!--<th class="hits">联系方式 </th>-->
+        <!--<th class="hits">何时联系 </th>-->
+        <th   class="headerSortUp date">注册时间</th>
+        <!--<th class="hits">操作 </th>-->
+
+    </tr>
+
+    </thead>
+    <tbody>
+    <foreach name="memberList" item="vo">
+        <tr>
+            <td><input type="checkbox" name="Page_checkbox" id="Page_{$vo.userid}"></td>
+
+            <td><a href="__APP__/Admin/Member/edit/id/{$vo.userid}">{$vo.username} </a>
+                <a href="javascript:void(0)" alt="删除" id="page_delete_{$vo.userid}" class="del"> × </a></td>
+            <!--<td>{$vo.company}</td>-->
+            <td>{$vo.userid}</td>
+            <td>{$vo.nickname}</td>
+            <td>{$vo.mobile}</td>
+            <td>{$vo.group.name}</td>
+            <td>{$vo.memberDetail.nickname}</td>
+            <td>{$vo.memberDetail.mobile}</td>
+            <td>{$vo.memberDetail.address}</td>
+            <td>{$vo.regdate|date="Y-m-d",###}</td>
+            <!--<td>-->
+                <!--&lt;!&ndash;状态&ndash;&gt;-->
+                        <!--<span class="verify" id="verify_{$vo.userid}">-->
+                        <!--<if condition="$vo['verify'] == 0">-->
+                            <!--<span class="stop">未审核</span>-->
+                            <!--<else />-->
+                            <!--<span class="run">已审核</span>-->
+                        <!--</if>-->
+                            <!--</span>-->
+            <!--</td>-->
+
+        </tr>
+    </foreach>
+    </tbody>
+</table>

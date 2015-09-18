@@ -1,0 +1,56 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="datalist">
+
+    <thead>
+    <tr>
+        <th class="checkbox">
+            <input type="checkbox" name="" id="check_all">
+        </th>
+        <th class="pic">图片</th>
+        <th>应用名称</th>
+        <th>频道分类</th>
+        <th class="date headerSortUp">发布日期</th>
+        <!--<th class="hits">浏览量</th>-->
+        <!--<th class="remind">评论</th>-->
+        <th class="public">状态</th>
+        <th class="public">操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <foreach name="products" item="vo">
+        <tr>
+            <td class="checkbox"><input type="checkbox" name="product_checkbox" id="product_{$vo.id}"></td>
+            <td class="pic" id="pic-{$vo.id}">
+                <if condition="($vo.thumb neq null)">
+                    <img src="__APP__/{$vo.thumb}" id="pic{$vo.id}" class="image" />
+                    <i class="icon-pictures"></i>
+                </if>
+                <!--<i class="icon-pictures"></i>-->
+            </td>
+            <td><a href="__APP__/Admin/Product/edit/id/{$vo.id}">{$vo.product_name}</a>&nbsp;&nbsp;<a
+                    href="javascript:void(0)" id="productDelete_{$vo.id}" class="del">&times;</a></td>
+
+            <td> {$vo.category.catname}</td>
+            <td class="date">{$vo.create_date|strtotime|date="Y-m-d",###}</td>
+            <!--<td class="hits">{$vo.counter}</td>-->
+            <!--<td class="remind">-->
+                <!--<if condition="$vo['countMessage'] != 0">-->
+                    <!--<a href="{:U('Product/comment?id='.$vo['id'])}">{$vo.countMessage}条</a>-->
+                <!--</if>-->
+            <!--</td>-->
+            <td class="public">
+                <switch name="vo.status">
+                    <case value="0"><span class="stop">关闭中</span></case>
+                    <case value="1"><span class="run">发布中</span></case>
+                    <default/>
+                    未知
+                </switch>
+            </td>
+            <td>
+                <a href="__APP__/Admin/Product/copy/id/{$vo.id}">复制</a>
+            </td>
+        </tr>
+    </foreach>
+    </tbody>
+</table>

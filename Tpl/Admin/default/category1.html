@@ -1,0 +1,92 @@
+<include file="./Admin/TPL/default/header.inc.html" />
+<body class="metrouicss">
+<include file="./Admin/TPL/default/top.inc.html" />
+<div id="main">
+<include file="./Admin/TPL/default/nav.inc.html" />
+<div id="main-container">
+
+
+
+<form action="Category/add" method="post">
+
+
+<table>
+	<tr>
+		<th>请选择模型：
+		</th>
+		<td> 
+		
+		<select name="module" id="module">
+			<option value="0">Default</option>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<th>上级栏目
+		</th>
+		<td>
+			<select id="parentid" name="parentid">
+			<option value="0">Default</option>
+			<foreach name="categories" item="category">
+			<option value="{$category.catid}" > {$category.catname}</option>
+			</foreach>
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<th>栏目名称
+		</th>
+		<td><input type="text" id="catname" name="catname" />
+		</td>
+	</tr>
+	<tr>
+		<th>英文目录
+		</th>
+		<td><input type="text" id="catdir" name="catdir" />
+		</td>
+	</tr>
+	
+	<tr>
+		<th>栏目图片
+		</th>
+		<td><input type="text" id="pic" name="pic" />
+		</td>
+	</tr>
+	
+	<tr>
+		<th>描述
+		</th>
+		<td> <textarea rows="5" cols="50" id="description" name="description"></textarea>
+		</td>
+	</tr>
+	
+	<tr>
+		<th>是否在导航显示：
+		</th>
+		<td>
+			<input type="radio" class="ismenu" name="ismenu" value="1" checked="checked" />是
+			<input type="radio" class="ismenu" name="ismenu" value="0" />否
+		</td>
+	</tr>
+	
+	
+	
+	
+	<tr >
+		<td colspan="2"> <input type="submit" /> </td>
+	 </tr>
+
+</table>
+
+
+
+</form>
+
+
+
+
+</div>
+
+<include file="./Admin/TPL/default/footer.inc.html" />
+</body>
+</html>

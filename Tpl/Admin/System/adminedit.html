@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <include file="Tpl/Admin/default/header.inc.html"/>
+</head>
+<body class="metrouicss">
+<include file="Tpl/Admin/default/top.inc.html"/>
+<div id="main">
+    <include file="Tpl/Admin/default/nav.inc.html"/>
+    <div id="main-container">
+
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="toolbar">
+            <tr>
+                <td>
+                    <p>您正在：{$crumbNav.action}&nbsp;&nbsp;{$crumbNav.module}</p>
+                </td>
+                <td><a href="javascript:;" onClick="history.back()">返回&gt;&gt;</a>
+                </td>
+            </tr>
+        </table>
+        <div id="right">
+            <form enctype="multipart/form-data" action="{:U('System/adminEditAct?id='.$adminList['userid'])}" method="post" id="dataform">
+                <input type="hidden" name="checkAll" id="checkAll" value="{$adminList.nodelid}"/>
+                <ul class="accordion" data-role="accordion">
+                    <li class="active"><a href="#" class="title">
+                        必填项
+                    </a>
+                        <div>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                                <tr>
+                                    <th>用户名</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="account" id="news_title" type="text"
+                                                                               class="required" value="{$adminList.username}"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>密码</th>
+                                    <td class="form">
+                                        <div class="input-control text"><input name="password" id="news_title" type="text"
+                                                                               class="required" value="************"></div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+                                <tr>
+                                    <th>角色</th>
+                                    <td class="form">
+                                        <div class="input-control text">
+                                            <input name="nickname" id="news_title" type="text" class="required" value="{$adminList.nickname}">
+                                        </div>
+                                    </td>
+                                    <td class="v" id="v_news_title"></td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </li>
+                    <li class="active"><a href="#" class="title">
+                        权限设置
+                    </a>
+                        <div><table width="100%" border="0" cellspacing="0" cellpadding="0" class="cmsform">
+                            <tr>
+                                <foreach name="moduleList" item="vo">
+                                    <if condition="$vo['module']   eq  'Product' and $vo['parentid'] neq 0">
+                                        <th>{$vo.name}</th>
+                                        <td class="form" >
+                                            <div class="input-control text">
+                                               <input type="checkbox" value="{$vo.id}" name="checkbox" class="checkbox"   <foreach name="nodeArr" item="no">
+                                                <if condition="$no eq $vo['id']">checked</if>
+                                            </foreach>>
+                                            </div>
+                                        </td>
+                                    </if>
+                                </foreach>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <foreach name="moduleList" item="vo">
+                                    <if condition="$vo['module']   eq  'News' and $vo['parentid'] neq 0">
+                                        <th>{$vo.name}</th>
+                                        <td class="form">
+                                            <div class="input-control text">
+                                                <input type="checkbox" value="{$vo.id}" name="checkbox" class="checkbox"   <foreach name="nodeArr" item="no">
+                                                <if condition="$no eq $vo['id']">checked</if>
+                                            </foreach>>
+                                            </div>
+                                        </td>
+                                    </if>
+                                </foreach>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <foreach name="moduleList" item="vo">
+                                    <if condition="$vo['module']   eq  'Page' and $vo['parentid'] neq 0">
+                                        <th>{$vo.name}</th>
+                                        <td class="form">
+                                            <div class="input-control text">
+                                                <input type="checkbox" value="{$vo.id}" name="checkbox" class="checkbox"   <foreach name="nodeArr" item="no">
+                                                <if condition="$no eq $vo['id']">checked</if>
+                                            </foreach>>
+                                            </div>
+                                        </td>
+                                    </if>
+                                </foreach>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <foreach name="moduleList" item="vo">
+                                    <if condition="$vo['module']   eq  'Clean'   ">
+                                        <th>{$vo.name}</th>
+                                        <td class="form">
+                                            <div class="input-control text">
+                                                <input type="checkbox" value="{$vo.id}" name="checkbox" class="checkbox"   <foreach name="nodeArr" item="no">
+                                                <if condition="$no eq $vo['id']">checked</if>
+                                            </foreach>>
+                                            </div>
+                                        </td>
+                                    </if>
+                                </foreach>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <foreach name="moduleList" item="vo">
+                                    <if condition="$vo['module']   eq  'Pic'   ">
+                                        <th>{$vo.name}</th>
+                                        <td class="form">
+                                            <div class="input-control text">
+                                                <input type="checkbox" value="{$vo.id}" name="checkbox" class="checkbox"   <foreach name="nodeArr" item="no">
+                                                <if condition="$no eq $vo['id']">checked</if>
+                                            </foreach>>
+                                            </div>
+                                        </td>
+                                    </if>
+                                </foreach>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                            <tr>
+                                <foreach name="moduleList" item="vo">
+                                    <if condition="$vo['module']   eq  'System'  and $vo['parentid'] neq 0 ">
+                                        <th>{$vo.name}</th>
+                                        <td class="form">
+                                            <div class="input-control text">
+                                                <input type="checkbox" value="{$vo.id}" name="checkbox" class="checkbox"   <foreach name="nodeArr" item="no">
+                                                <if condition="$no eq $vo['id']">checked</if>
+                                            </foreach>>
+                                            </div>
+                                        </td>
+                                    </if>
+                                </foreach>
+                                <td class="v" id="v_news_title"></td>
+                            </tr>
+                        </table>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="buttons"><input type="submit" value="确认"/><input type="reset"
+                                                                             value="重置"/></div>
+            </form>
+        </div>
+        <!--end.right-->
+    </div>
+</div>
+<!--end.main-->
+<include file="Tpl/Admin/default/footer.inc.html"/>
+
+
+</body>
+
+<script type="text/javascript" >
+
+    //checkbox获取值
+    $('.checkbox').click(function () {
+        var s='';
+        $('input[name="checkbox"]:checked').each(function(){
+            s+=$(this).val()+',';
+        });
+        $('#checkAll').val(s);
+    });
+</script>
+</html>

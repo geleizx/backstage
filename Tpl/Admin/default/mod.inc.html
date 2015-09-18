@@ -1,0 +1,57 @@
+<ul id="modbox">
+    <volist name="quickMenu" id="vo">
+        <!--<li data-item="{$vo.quick_menu_order}_{$vo.id}"><a href="{:U($vo['M_url'])}">-->
+            <!--<div class="tile bg-color icon">-->
+                <!--<div class="icoClose" title="从桌面隐藏此模块" id="mod_{$vo.id}"></div>-->
+                <!--<if condition="$vo['isshownum'] == 1 AND $vo['num'] != 0">-->
+                <!--<div class="icoNum" title="{$vo.num}">{$vo.num}</div>-->
+                <!--</if>-->
+                <!--<b class="check"></b>-->
+                <!--<div class="tile-content">-->
+                    <!--<img src="{$images_dir}/{$vo.img}"/>-->
+                <!--</div>-->
+                <!--<div class="brand">-->
+                    <!--<span class="name">{$vo.name}</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</a></li>-->
+    </volist>
+    <li>
+    <!--<a href="javascript:void(0)" id="add_shorcut">-->
+        <!--<div class="tile bg-color-void icon">-->
+            <!--<b class="check"></b>-->
+
+            <!--<div class="tile-content">-->
+                <!--<img src="{$images_dir}/ico_plus.png"/>-->
+            <!--</div>-->
+            <!--<div class="brand">-->
+                <!--<span class="name">填加快捷方式</span>-->
+            <!--</div>-->
+
+        <!--</div>-->
+    <!--</a>-->
+    </li>
+
+</ul><!--end.modbox-->
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        var data = $("#modbox li").map(function() { return $(this).data('item'); }).get();
+
+        window.SORT = data;
+
+    });
+
+    $("#modbox").dragsort({ dragSelector: "div", dragBetween: true, dragEnd: saveOrder, placeHolderTemplate: "<li class='placeHolder'><div></div></li>" });
+    function saveOrder() {
+        var data = $("#modbox li").map(function() { return $(this).data('item'); }).get();
+
+        $.get('{:U("Index/SortQuickMenu")}',{'before' : window.SORT  , 'after' : data} ,function(data){
+
+
+        })
+
+    };
+</script>

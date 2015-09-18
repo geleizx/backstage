@@ -1,0 +1,72 @@
+
+<div data-role="page-control" class="page-control span10">
+    <span class="menu-pull"></span>
+
+    <div class="menu-pull-bar">页面 1</div>
+
+    <ul>
+        <li class="active"><a href="#page1">左侧对联</a></li>
+        <li><a href="#page2">右侧对联</a></li>
+    </ul>
+
+    <div class="frames">
+        <div id="page1" class="frame active">
+            <table>
+                <tr>
+                    <th>上传图片</th>
+                    <td class="form"><input type="file" id="left_imgsrc" name="left_imgsrc_temp" class="upload" value="{$adContent.couple_left_imgsrc}"> <input type="hidden" name="left_imgsrc" id="hidden-left_imgsrc" value="{$adContent.couple_left_imgsrc}" /></td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <if condition="$adContent['couple_left_imgsrc']">
+                    <td class="form"><img src="{$adContent.couple_left_imgsrc}"  id="preview-img-left_imgsrc" class="preview-img"></td>
+                    <else />
+                    <td class="form"><img src="{$images_dir}/noimg.jpg"  id="preview-img-left_imgsrc" class="preview-img"></td>
+                    </if>
+                </tr>
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="left_linkurl" id="left_linkurl" type="text" value="{$adContent.couple_left_linkurl}"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="left_des" id="left_des" type="text" value="{$adContent.couple_left_des}"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="page2" class="frame">
+            <table>
+                <tr>
+                    <th>上传图片</th>
+                    <td class="form"><input type="file" class="upload" id="right_imgsrc" name="right_imgsrc_temp">  <input type="hidden"  name="right_imgsrc" id="hidden-right_imgsrc" value="{$adContent.couple_right_imgsrc}"/></td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <if condition="$adContent['couple_right_imgsrc']">
+                    <td class="form"><img src="{$adContent.couple_right_imgsrc}"  id="preview-img-left_imgsrc" class="preview-img"></td>
+                    <else />
+                    <td class="form"><img src="{$images_dir}/noimg.jpg"  id="preview-img-left_imgsrc" class="preview-img"></td>
+                    </if>
+                </tr>
+                <tr>
+                    <th>链接网址</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="right_linkurl" id="right_linkurl" type="text" value="{$adContent.couple_right_linkurl}"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>描述</th>
+                    <td class="form">
+                        <div class="input-control text"><input name="right_des" id="title" type="text" value="{$adContent.couple_right_des}"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</td>
+</tr>

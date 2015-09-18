@@ -261,7 +261,7 @@ class PicAction extends AdminBaseAction {
             $count = count( explode ("/",$picture) );
             $picture = explode("/",$picture);
             $picture = $picture [ $count - 1];
-            $picture = 'uploads/'.date(Ymd).'/'.$picture;
+            $picture = __APP__.'/uploads/'.date(Ymd).'/'.$picture;
         }
             $data['images'] = $picture;
 
@@ -341,7 +341,7 @@ class PicAction extends AdminBaseAction {
 
             $picture = $picture [ $count - 1];
 
-            $picture = 'uploads/'.date(Ymd).'/'.$picture;
+            $picture = __APP__.'/uploads/'.date(Ymd).'/'.$picture;
 
 
 

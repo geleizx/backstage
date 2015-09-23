@@ -52,3 +52,28 @@
     </foreach>
     </tbody>
 </table>
+
+<script>
+    //操作
+    $('.verify').click(function(){
+        var  str =  $(this).attr("id");
+        var splitstr = str.split('_');
+        var id =  splitstr[1];
+        var node = $(this);
+        $.post("__APP__/Admin/Page/verifyPageAct",{id:id},function(data){
+            var status = data.status;
+
+            if (status) {
+                if (data.info == 0){
+                    node.html("<span class='stop'>已下架</span>");
+                }else{
+                    node.html("<span class='run'>已开启</span>");
+                }
+            } else {
+                alert(data.info);
+            }
+        });
+
+    });
+
+</script>

@@ -32,7 +32,7 @@ class IndexAction extends AdminBaseAction{
         return $result;
     }
 
-    public function  index(){
+    public function index(){
 
         $test  = M('test');
         $testList = $test->select();

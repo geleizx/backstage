@@ -26,7 +26,7 @@ class AppsouAction  extends Action
             $time =  date("Y-m-d H:i:s",strtotime('-1 days'));
             $needtime = strtotime($time);
 
-            $list = M()->table("tp_page a,tp_pagesou b")->where("a.id = b.aid and b.mtime > $needtime")->group("b.aid")->order("count(b.aid) desc")->limit(8)->select();
+            $list = M()->table("tp_pagesou b,tp_page a")->where("a.id = b.aid and b.mtime > $needtime  and verify=1")->group("b.aid")->order("count(b.aid) desc")->limit(8)->select();
 
             // $list = postmem($sqlb, "arr");
             if($list==''){
@@ -65,23 +65,22 @@ class AppsouAction  extends Action
     public function hottop()
     {
 
-        $version = I('versioncode');
+        $version = I('version');
         $cid = I('topId');
-        if($version==''){
-            echo json_encode(array("error"=>"noversioin"));
+        if ($version == '') {
+            echo json_encode(array("error" => "noversioin"));
         }
-        if($cid==''){
+        if ($cid == '') {
             $cid = 1969;
         }
-        if ($version > 5) {
+        if ($version > 6) {
 
-            $time =  date("Y-m-d H:i:s",strtotime('-1 days'));
+            $time = date("Y-m-d H:i:s", strtotime('-1 days'));
             $needtime = strtotime($time);
 
-            $list = M()->table("tp_page a,tp_pagesou b")->where("a.cid = $cid and a.id = b.aid and b.mtime > $needtime")->group("b.aid")->order("count(b.aid) desc")->limit(20)->select();
+            $list = M()->table("tp_pagesou b,tp_page a")->where("a.cid = $cid and a.id = b.aid and b.mtime > $needtime and verify=1")->group("b.aid")->order("count(b.aid) desc")->limit(20)->select();
 
-            // $list = postmem($sqlb, "arr");
-            if($list==''){
+            if (empty($list)) {
                 $list = M()->table("tp_page")->where("cid = $cid")->order("year desc")->limit(20)->select();
             }
             foreach ($list as $v) {
@@ -90,19 +89,138 @@ class AppsouAction  extends Action
                 }
                 $outlisttype[] = $v;
             }
-            
-           
-        $configstr = array(
-            "0"=>array("title"=>"热门电影","topId"=>1969),
-            "1"=>array("title"=>"热门电视","topId"=>1970),
-            "2"=>array("title"=>"热门综艺","topId"=>1971),
-            "3"=>array("title"=>"热门动漫","topId"=>1972)
-        );   
-            
-        $newJson = json_encode(
+            $i = 1;
+
+            foreach ($outlisttype as $v) {
+                if (strstr($v['title'], "性爱") || strstr($v['title'], "党") || strstr($v['title'], "共产")) {
+                    continue;
+                }
+
+                $sqlc = M('pagetype')->where("aid = " . $v['id'])->order("sort asc")->select();
+                $outlist[$i]['aid'] = $v['id'];
+                $outlist[$i]['pic'] = $v['pic'];
+                $outlist[$i]['title'] = $v['title'];
+                $outlist[$i]['pingy'] = $v['pingy'];
+                $outlist[$i]['act'] = $v['act'];
+                $outlist[$i]['topId'] = $v['cid'];
+                if ($v['year'] > 0) {
+                    $outlist[$i]['year'] = $v['year'];
+                } else {
+                    $outlist[$i]['year'] = "未知";
+                }
+                $outlist[$i]['topId'] = $v['cid'];
+
+                foreach ($sqlc as $k => $vc) {
+                    if ($vc['type'] == 2) {
+                        continue;
+                    }
+                    if ($vc['type'] == 7) {
+                        $outlist[$i]['uuid7'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                        if (empty($outlist[$i]['uuid4'])) $outlist[$i]['uuid4'] = "";
+                        if (empty($outlist[$i]['uuid5'])) $outlist[$i]['uuid5'] = "";
+                        if (empty($outlist[$i]['uuid6'])) $outlist[$i]['uuid6'] = "";
+                        $type = 2324;
+                        $outlist[$i]['appid7'] = $type;
+                    } elseif ($vc['type'] == 6) {
+                        $outlist[$i]['uuid6'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                        if (empty($outlist[$i]['uuid4'])) $outlist[$i]['uuid4'] = "";
+                        if (empty($outlist[$i]['uuid5'])) $outlist[$i]['uuid5'] = "";
+                        $type = 1420;
+                        $outlist[$i]['appid6'] = $type;
+                    } elseif ($vc['type'] == 5) {
+                        $outlist[$i]['uuid5'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                        if (empty($outlist[$i]['uuid4'])) $outlist[$i]['uuid4'] = "";
+                        $type = 658;
+                        $outlist[$i]['appid5'] = $type;
+                    } elseif ($vc['type'] == 2) {
+                        $outlist[$i]['uuid2'] = "http://ott-api.fun.tv/api/v3/subject/" . $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        $type = 944;
+                        $outlist[$i]['appid2'] = $type;
+                    } elseif ($vc['type'] == 1) {
+                        $outlist[$i]['uuid1'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        $type = 14;
+                        $outlist[$i]['appid1'] = $type;
+                    } elseif ($vc['type'] == 8) {
+                        $outlist[$i]['uuid8'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                        if (empty($outlist[$i]['uuid4'])) $outlist[$i]['uuid4'] = "";
+                        if (empty($outlist[$i]['uuid5'])) $outlist[$i]['uuid5'] = "";
+                        if (empty($outlist[$i]['uuid6'])) $outlist[$i]['uuid6'] = "";
+                        if (empty($outlist[$i]['uuid7'])) $outlist[$i]['uuid7'] = "";
+                        $type = 1057;
+                        $outlist[$i]['appid8'] = $type;
+                    } elseif ($vc['type'] == 3) {
+                        $outlist[$i]['uuid3'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        $type = 11;
+                        $outlist[$i]['appid3'] = $type;
+                    } elseif ($vc['type'] == 4) {
+                        $outlist[$i]['uuid4'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                        $type = 13;
+                        $outlist[$i]['appid4'] = $type;
+                    }elseif ($vc['type'] == 9&&$version>9) {
+                        $outlist[$i]['uuid9'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                        if (empty($outlist[$i]['uuid4'])) $outlist[$i]['uuid4'] = "";
+                        if (empty($outlist[$i]['uuid5'])) $outlist[$i]['uuid5'] = "";
+                        if (empty($outlist[$i]['uuid6'])) $outlist[$i]['uuid6'] = "";
+                        if (empty($outlist[$i]['uuid7'])) $outlist[$i]['uuid7'] = "";
+                        if (empty($outlist[$i]['uuid8'])) $outlist[$i]['uuid8'] = "";
+                        $type = 1720;
+                        $outlist[$i]['appid9'] = $type;
+                    }
+
+                    $outlist[$i]['appid'][] = $type;
+                }
+
+                if (count($outlist[$i]['appid']) == 0) {
+                    $outlist[$i] = array();
+                    array_pop($outlist);
+                } else {
+                    $i++;
+                }
+
+            }
+
+            $configstr = array(
+                "0" => array("title" => "热门电影", "topId" => 1969),
+                "1" => array("title" => "热门电视", "topId" => 1970),
+                "2" => array("title" => "热门综艺", "topId" => 1971),
+                "3" => array("title" => "热门动漫", "topId" => 1972)
+            );
+
+            $newJson = json_encode(
                 array_merge(
                     array('hotlive' => $configstr),
-                    array('hottop' => $outlisttype)
+                    array('hottop' => $outlist)
                 )
             );
             echo $newJson;
@@ -305,6 +423,19 @@ class AppsouAction  extends Action
                         if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
                         $type = 13;
                         $outlist[$i]['appid4'] = $type;
+                    }elseif ($vc['type'] == 9&&$version>9) {
+                        $outlist[$i]['uuid9'] = $vc['mkey'];
+                        if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                        if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                        if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                        if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                        if (empty($outlist[$i]['uuid4'])) $outlist[$i]['uuid4'] = "";
+                        if (empty($outlist[$i]['uuid5'])) $outlist[$i]['uuid5'] = "";
+                        if (empty($outlist[$i]['uuid6'])) $outlist[$i]['uuid6'] = "";
+                        if (empty($outlist[$i]['uuid7'])) $outlist[$i]['uuid7'] = "";
+                        if (empty($outlist[$i]['uuid8'])) $outlist[$i]['uuid8'] = "";
+                        $type = 1720;
+                        $outlist[$i]['appid9'] = $type;
                     }
                     $outlist[$i]['appid'][] =$type ;
 
@@ -503,7 +634,20 @@ class AppsouAction  extends Action
                             if (empty($outlist[$i]['uuid7'])) $outlist[$i]['uuid7'] = "";
                             $type = 1057;
                             $outlist[$i]['appid8'] = $type;
-                  }
+                        }elseif ($vc['type'] == 9&&$version>9) {
+                            $outlist[$i]['uuid9'] = $vc['mkey'];
+                            if (empty($outlist[$i]['uuid'])) $outlist[$i]['uuid'] = "";
+                            if (empty($outlist[$i]['uuid1'])) $outlist[$i]['uuid1'] = "";
+                            if (empty($outlist[$i]['uuid2'])) $outlist[$i]['uuid2'] = "";
+                            if (empty($outlist[$i]['uuid3'])) $outlist[$i]['uuid3'] = "";
+                            if (empty($outlist[$i]['uuid4'])) $outlist[$i]['uuid4'] = "";
+                            if (empty($outlist[$i]['uuid5'])) $outlist[$i]['uuid5'] = "";
+                            if (empty($outlist[$i]['uuid6'])) $outlist[$i]['uuid6'] = "";
+                            if (empty($outlist[$i]['uuid7'])) $outlist[$i]['uuid7'] = "";
+                            if (empty($outlist[$i]['uuid8'])) $outlist[$i]['uuid8'] = "";
+                            $type = 1720;
+                            $outlist[$i]['appid9'] = $type;
+                        }
 
                     $outlist[$i]['appid'][] = $type;
 

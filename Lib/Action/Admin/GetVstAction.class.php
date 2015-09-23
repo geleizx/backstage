@@ -76,6 +76,8 @@ class GetVstAction extends BaseAction
                     $v['title'] = str_replace('：',":", $v['title']);
                     $title = $v['title'];
                     $rowss = M('page')->where("title = '$title' and cid = $cid")->field("allnum,id")->find();
+                  
+                  
                     $id = $rowss['id'];
                     if (empty($rowss)) {
                         $v['title'] = addslashes($v['title']);

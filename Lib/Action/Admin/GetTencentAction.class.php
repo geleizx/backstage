@@ -58,7 +58,7 @@ class GetTencentAction extends BaseAction
                     $title = $value['title'];
                     $year =  explode("(",$value['year']);
                     $year = substr($year[1],0,4);
-                    $rowss = M('page')->where(array("title"=>$title,"cid"=>$cid,"year"=>$year))->field("id")->find();
+                    $rowss = M('page')->where("title = '$title' and cid= $cid")->field("id")->find();
                     if ($rowss) {
                         $id = $rowss['id'];
                         $pagetype = M('pagetype')->where("aid = $id and type = 7")->field("id")->find();
